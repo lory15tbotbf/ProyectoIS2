@@ -1,0 +1,24 @@
+{% extends "static/layout.html" %}
+
+{% block title %}List User{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+    <h3>Usuarios</h3>
+</div>
+
+<ul class="users">
+{% for user in list %}
+    <li class="span3">
+        <div class="well well-small user">
+            <div class="text">
+                <a href="{{ url_for('showUser', nombre = user.name )}}"<h5>{{ user.name }}</h5></a>
+            </div> 
+        </div>
+    </li>
+{% endfor %}
+    <p><input type="button" value="Crear Usuario" onclick="document.location='addUser';">
+</ul>
+
+
+{% endblock %}
