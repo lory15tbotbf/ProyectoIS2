@@ -8,28 +8,31 @@
       <dl>
         {{ form.csrf }}
             {{ form.nombre.label(style="float: left; width: 100px;") }}
-            {{form.nombre(class="form-input", style="width:100px", readonly="readonly") }}
+            {{form.nombre(class="form-input", style="width:200px", readonly="readonly") }}
             {% for error in form.nombre.errors %} {{ error }} {% endfor %}
             <br />
             {{ form.descripcion.label(style="float: left; width: 100px;") }}
-            {{form.descripcion(class="form-input", style="width:100px", readonly="readonly") }}
+            {{form.descripcion(class="form-input", style="height:50px;width:200px", readonly="readonly") }}
             {% for error in form.descripcion.errors %} {{ error }} {% endfor %}
             <br />
-            {{ form.fechaDeCreacion.label(style="float: left; width: 100px;") }}
-            {{form.fechaDeCreacion(class="form-input", style="width:100px", readonly="readonly") }}
-            {% for error in form.fechaDeCreacion.errors %} {{ error }} {% endfor %}
-            <br />
             {{ form.fechaDeInicio.label(style="float: left; width: 100px;") }}
-            {{form.fechaDeInicio(class="form-input", style="width:100px", readonly="readonly") }}
+            {{form.fechaDeInicio(class="form-input", style="width:200px", readonly="readonly") }}
             {% for error in form.fechaDeInicio.errors %} {{ error }} {% endfor %}
             <br />
             {{ form.fechaDeFin.label(style="float: left; width: 100px;") }}
-            {{form.fechaDeFin(class="form-input", style="width:100px", readonly="readonly") }}
+            {{form.fechaDeFin(class="form-input", style="width:200px", readonly="readonly") }}
             {% for error in form.fechaDeFin.errors %} {{ error }} {% endfor %}
             <br />
+            <script language="JavaScript">
+                function confirmar ( mensaje ) {
+                    return confirm( mensaje );
+                } 
+            </script>  
       </dl>
-      <p><input type="submit" name="edit" value="Modificar Proyecto">
-      <p><input type="submit" name="delete" value="Eliminar Proyecto">
-    
+      <p>
+          <input type="submit" name="edit" value="Modificar Proyecto"  >
+          <input type="submit" name="delete" value="Eliminar Proyecto" onclick="return confirmar('¿Está seguro que desea eliminar el registro?')">
+          <input type="button" value="Cancelar" onclick="javascript:history.back();">
+      </p>
     </form>
 {% endblock %}
