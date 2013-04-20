@@ -53,7 +53,6 @@ class User(db.Model):
     # un usuario tiene 0 a n roles
     roles = db.relationship("UserXRol")
     
-    
 
     def __init__(self, name=None, passwd=None):
         """ constructor de user """
@@ -70,7 +69,6 @@ class User(db.Model):
         self.telefono = telefono
         self.obs = obs
            
-
 
 class Rol(db.Model):
     """ Modelo de Rol """
@@ -113,29 +111,30 @@ class Permiso(db.Model):
 
 class Proyecto(db.Model):
     """ Modelo de Proyecto """
+    
     __tablename__ = 'Proyecto'
     
     idProyecto = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(45), unique=True)
     descripcion = db.Column(db.String(150))
-    fechaDeCreacion = db.Column(db.DateTime)
+    fechaDeCreacion = db.Column(db.DateTime, default = datetime.now())
     fechaDeInicio = db.Column(db.DateTime)
     fechaDeFin = db.Column(db.DateTime)
     estado = db.Column(db.String(20), default ='Pendiente')
     
-    def __init__(self, nombre=None, descripcion=None, fechaDeCreacion=None):
+    def __init__(self, nombre=None, descripcion=None):
         """ constructor de Proyecto """
         self.nombre = nombre
         self.descripcion = descripcion
-        self.fechaDeCreacion = fechaDeCreacion
         
-    def __init__(self, nombre=None, descripcion=None, fechaDeCreacion=None, fechaDeInicio=None, fechaDeFin=None):
+    def __init__(self, nombre=None, descripcion=None, fechaDeInicio=None, fechaDeFin=None):
         """ constructor de Proyecto """
         self.nombre = nombre
         self.descripcion = descripcion
-        self.fechaDeCreacion = fechaDeCreacion
-        self.fechaDeInicio = fechaDeInicio
-        self.fechaDeFin = fechaDeFin
+        date = datetime.strptime(fechaDeInicio, '%Y-%m-%d %I:%M:%S')
+        self.fechaDeInicio = date
+        date = datetime.strptime(fechaDeFin, '%Y-%m-%d %I:%M:%S')
+        self.fechaDeFin = date
     
 
 class TipoDeAtributo(db.Model):
@@ -186,10 +185,20 @@ class RolXPermiso(db.Model):
         self.idRol = idRol
         self.idPermiso = idPermiso
 
-        
+       
 #------------------------------------------------------------------------------#
 # FORMS
 #------------------------------------------------------------------------------#
+
+# Ingreso al Sistema
+
+class LoginForm(Form):
+    """ Formulario de logueo """
+    username = TextField('Nick', [validators.required(), validators.Length(min=1, max=10)])
+    password = PasswordField('Password', [validators.required(), validators.Length(min=1, max=15)])
+
+
+# Administrar Usuarios
 
 class CreateFormUser(Form):
     """ Formulario para crear un usuario"""
@@ -202,28 +211,23 @@ class CreateFormUser(Form):
     obs = TextField('Obs', [validators.required()])
 
 
-class CreateFormProject(Form):
-    """ Formulario para crear proyecto"""
-    nombre = TextField('Nombre', [validators.required()])
-    descripcion = TextField('Descripcion', [validators.required()])
-    fechaDeCreacion = DateTimeField('FechaDeCreacion', format='%d-%m-%Y %H:%M:%S')
-    fechaDeInicio = DateTimeField('FechaDeInicio', format='%d-%m-%Y %H:%M:%S')
-    fechaDeFin = DateTimeField('FechaDeFin', format='%d-%m-%Y %H:%M:%S')
-    
-    
-   
-class LoginForm(Form):
-    """ Formulario de logueo """
-    username = TextField('Nick', [validators.required()])
-    password = PasswordField('Password', [validators.required()])
-
-
 class EditStateForm(Form):
+    """ Formulario para editar estado de usuario """
     estado = SelectField("Estado", choices = [
         ("Inactivo", "Inactivo"),
         ("Activo", "Activo")])
     submit = SubmitField("POST")
-    
+
+# Administrar Proyecto
+
+class CreateFormProject(Form):
+    """ Formulario para crear proyecto"""
+    nombre = TextField('Nombre', [validators.Length(min=1, max=45)])
+    descripcion = TextField('Descripcion', [ validators.Length(min=1, max=150)])
+    fechaDeInicio = DateTimeField('FechaDeInicio',[validators.Length(min=1, max=45)])
+    fechaDeFin = DateTimeField('FechaDeFin', [validators.Length(min=1, max=45)])
+ 
+
 #------------------------------------------------------------------------------#
 # CONTROLLERS
 #------------------------------------------------------------------------------#
@@ -244,6 +248,7 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """ Logueo al sistema """
     if g.user is None:
         error = None
         if request.method=='POST':
@@ -269,6 +274,7 @@ def login():
 
 @app.route('/logout')
 def logout():
+    """ Logout del sistema """
     if g.user is not None:
         session.pop('logged_in', None)
         session.pop('user_id', None)
@@ -277,10 +283,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/rolPermiso', methods=['GET','POST'])
-def rolPermiso():
-     return render_template(app.config['DEFAULT_TPL']+'/rolPermiso.html',
-			    conf = app.config,)
 
 #  Modulo del Sistema
 
@@ -301,14 +303,14 @@ def gestion():
 @app.route('/addUser', methods=['GET','POST'])
 def addUser():
     if request.method == 'POST':
-		user = User(name = request.form['name'], passwd = request.form['password'],
-                nombre = request.form['nombre'], apellido = request.form['apellido'],
-                email = request.form['email'], telefono = request.form['telefono'], 
-                obs = request.form['obs'])    
-		db.session.add(user)
-		db.session.commit()
-                flash('Se ha creado correctamente el usuario')
-		return redirect(url_for('listEdit'))
+        user = User(name = request.form['name'], passwd = request.form['password'],
+        nombre = request.form['nombre'], apellido = request.form['apellido'],
+        email = request.form['email'], telefono = request.form['telefono'], 
+        obs = request.form['obs'])    
+        db.session.add(user)
+        db.session.commit()
+        flash('Se ha creado correctamente el usuario')
+        return redirect(url_for('listEdit'))
     return render_template(app.config['DEFAULT_TPL']+'/formUser.html',
 			       conf = app.config,
 			       form = CreateFormUser())
@@ -402,6 +404,7 @@ def showUser(nombre):
 
 @app.route('/listEditProject')
 def listEditProject():
+    """ Lista editable de proyectos que se alojan en la base de datos"""
     if g.user is None:
         return redirect(url_for('login'))
     else:
@@ -412,18 +415,18 @@ def listEditProject():
 
 @app.route('/showProject/<path:nombre>.html', methods=['GET','POST'])
 def showProject(nombre):
+    """  Muestra un formulario no editable del proyecto con las opciones de modificar, eliminar proyecto """
     if g.user is None:
         return redirect(url_for('login'))
     else:
         project = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
         form = CreateFormProject(request.form, nombre = project.nombre,
-               descripcion = project.descripcion, fechaDeCreacion = project.fechaDeCreacion,
-                fechaDeInicio = project.fechaDeInicio, fechaDeFin = project.fechaDeFin)
+               descripcion = project.descripcion,fechaDeInicio = project.fechaDeInicio, fechaDeFin = project.fechaDeFin)
         if request.method == 'POST':
             if request.form.get('edit', None) == "Modificar Proyecto":
-                return redirect(url_for('editProject', nombre = project.name))
+                return redirect(url_for('editProject', nombre = project.nombre))
             elif request.form.get('delete', None) == "Eliminar Proyecto":
-                return redirect(url_for('deleteProject', nombre = project.name))
+                return redirect(url_for('deleteProject', nombre = project.nombre))
             
 	return render_template(app.config['DEFAULT_TPL']+'/showProject.html',
 			       conf = app.config,
@@ -432,19 +435,20 @@ def showProject(nombre):
 
 @app.route('/editProject/<path:nombre>.html', methods=['GET','POST'])
 def editProject(nombre):
+    """ Muestra el formulario editable del proyecto """
     if g.user is None:
         return redirect(url_for('login'))
     else:
         project = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
         form = CreateFormProject(request.form, nombre = project.nombre,
-               descripcion = project.descripcion, fechaDeCreacion = project.fechaDeCreacion,
-                fechaDeInicio = project.fechaDeInicio, fechaDeFin = project.fechaDeFin)
+               descripcion = project.descripcion,fechaDeInicio = project.fechaDeInicio, fechaDeFin = project.fechaDeFin)
 	if request.method == 'POST' and form.validate:
             project.nombre = request.form['nombre'] 
             project.descripcion = request.form['descripcion']
-            project.fechaDeCreacion = request.form['fechaDeCreacion']
-            project.fechaDeInicio = request.form['fechaDeInicio']
-            project.fechaDeFin = request.form['fechaDeFin']
+            date = datetime.strptime(request.form['fechaDeInicio'], '%Y-%m-%d %I:%M:%S')
+            project.fechaDeInicio = date
+            date = datetime.strptime(request.form['fechaDeFin'], '%Y-%m-%d %I:%M:%S')
+            project.fechaDeFin = date
             db.session.commit()
             flash('Se ha modificado correctamente el proyecto')
             return redirect(url_for('listEditProject'))
@@ -455,23 +459,26 @@ def editProject(nombre):
 
 @app.route('/deleteProject/<path:nombre>.html')
 def deleteProject(nombre):
-        project = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
-        db.session.delete(project)
-        db.session.commit()
-        flash('Se ha borrado correctamente')
-        return redirect(url_for('listEditProject'))
+    """ Elimina un proyecto """
+    project = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
+    db.session.delete(project)
+    db.session.commit()
+    flash('Se ha borrado correctamente')
+    return redirect(url_for('listEditProject'))
                              
 
 @app.route('/addProject', methods=['GET','POST'])
 def addProject():
-    if request.method == 'POST':
-        project = Proyecto(nombre = request.form['nombre'], descripcion = request.form['descripcion'],
-        fechaDeCreacion = request.form['fechaDeCreacion'], fechaDeInicio = request.form['fechaDeInicio'], 
-        fechaDeFin = request.form['fechaDeFin'])    
-        db.session.add(project)
-        db.session.commit()
-        flash('Se ha creado correctamente el proyecto')
-        return redirect(url_for('listEditProject'))
+    """ Agrega un proyecto """
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        if request.method == 'POST':
+            project = Proyecto(nombre = request.form['nombre'], descripcion = request.form['descripcion'],fechaDeInicio = request.form['fechaDeInicio'], fechaDeFin = request.form['fechaDeFin'])    
+            db.session.add(project)
+            db.session.commit()
+            flash('Se ha creado correctamente el proyecto')
+            return redirect(url_for('listEditProject'))
     return render_template(app.config['DEFAULT_TPL']+'/formProject.html',
 			       conf = app.config,
 			       form = CreateFormProject())
