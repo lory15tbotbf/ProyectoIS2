@@ -193,13 +193,21 @@ class RolXPermiso(db.Model):
 
 class CreateFormUser(Form):
     """ Formulario para crear un usuario"""
-    name = TextField('Name', [validators.required()])
-    password = PasswordField('Password', [validators.required()])
-    nombre = TextField('Nombre', [validators.required()])
-    apellido = TextField('Apellido', [validators.required()])
-    email = TextField('Email', [validators.required()])
-    telefono = IntegerField('Telefono', [validators.required()])
+    name = TextField('Name', [validators.required(), validators.Length(min=1, max=10)])
+    password = PasswordField('Password', [validators.required(), validators.Length(min=1, max=15)])
+    confirmacion = PasswordField('Confirmacion', [validators.EqualTo('password')])
+    nombre = TextField('Nombre', [validators.required(), validators.Length(min=1, max=45)])
+    apellido = TextField('Apellido', [validators.required(), validators.Length(min=1, max=45)])
+    email = TextField('Email', [validators.required(), validators.Length(min=1, max=45), validators.Email()])
+    telefono = IntegerField('Telefono', [validators.required(), validators.NumberRange(min=None, max=None, message=None)])
     obs = TextField('Obs', [validators.required()])
+
+
+class CreateFormRol(Form):
+    """ Formulario para crear rol"""
+    nombre = TextField('Nombre', [validators.required(), validators.Length(min=1, max=45)])
+    ambito = TextField('Ambito', [validators.required(), validators.Length(min=1, max=45)])
+    descripcion = TextField('Descripcion', [validators.required(), validators.Length(min=1, max=45)])
 
 
 class CreateFormProject(Form):
@@ -277,11 +285,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/rolPermiso', methods=['GET','POST'])
-def rolPermiso():
-     return render_template(app.config['DEFAULT_TPL']+'/rolPermiso.html',
-			    conf = app.config,)
-
 #  Modulo del Sistema
 
 @app.route('/administracion', methods=['GET','POST'])
@@ -300,18 +303,41 @@ def gestion():
 
 @app.route('/addUser', methods=['GET','POST'])
 def addUser():
-    if request.method == 'POST':
-		user = User(name = request.form['name'], passwd = request.form['password'],
-                nombre = request.form['nombre'], apellido = request.form['apellido'],
-                email = request.form['email'], telefono = request.form['telefono'], 
-                obs = request.form['obs'])    
-		db.session.add(user)
-		db.session.commit()
+    """Controlador para crear usuario"""
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        if request.method == 'POST':
+            form = CreateFormUser(request.form, name = request.form['name'],
+                        password = request.form['password'],
+                        confirmacion = request.form['confirmacion'],
+                        nombre = request.form['nombre'],
+                        apellido = request.form['apellido'],
+                        email = request.form['email'],
+                        telefono = request.form['telefono'],
+                        obs = request.form['obs'])
+            if form.validate():
+                user = User(name = request.form['name'],
+                            passwd = request.form['password'],
+                            nombre = request.form['nombre'],
+                            apellido = request.form['apellido'],
+                            email = request.form['email'],
+                            telefono = request.form['telefono'],
+                            obs = request.form['obs'])
+                
+                db.session.add(user)
+                db.session.commit()
+                
                 flash('Se ha creado correctamente el usuario')
-		return redirect(url_for('listEdit'))
+                return redirect(url_for('listEdit'))
+            else:
+                return render_template(app.config['DEFAULT_TPL']+'/formUser.html',
+                            conf = app.config,
+                            form = form)
     return render_template(app.config['DEFAULT_TPL']+'/formUser.html',
-			       conf = app.config,
-			       form = CreateFormUser())
+                conf = app.config,
+                form = CreateFormUser())
+
 
 
 @app.route('/deleteUser/<path:nombre>.html')
@@ -355,22 +381,27 @@ def editUser(nombre):
         return redirect(url_for('login'))
     else:
         user = User.query.filter(User.name == nombre).first_or_404()
-        form = CreateFormUser(request.form, name = user.name, 
-               password = user.passwd, nombre = user.nombre,
-               apellido = user.apellido, email = user.email,
-               telefono = user.telefono, obs = user.obs)
-	if request.method == 'POST' and form.validate:
+        form = CreateFormUser(request.form, name = user.name,
+                        password = user.passwd,
+                        confirmacion = user.passwd,
+                        nombre = user.nombre,
+                        apellido = user.apellido,
+                        email = user.email,
+                        telefono = user.telefono,
+                        obs = user.obs)
+	if request.method == 'POST' and form.validate():
             user.name = request.form['name']
             user.passwd = request.form['password']
-            user.nombre = request.form['nombre'] 
+            user.nombre = request.form['nombre']
             user.apellido = request.form['apellido']
             user.email = request.form['email']
-            user.telefono = request.form['telefono'] 
+            user.telefono = request.form['telefono']
             user.obs = request.form['obs']
+
             db.session.commit()
             flash('Se ha modificado correctamente el usuario')
             return redirect(url_for('listEdit'))
-    return render_template(app.config['DEFAULT_TPL']+'/editUser.html',
+    return render_template(app.config['DEFAULT_TPL']+'/formUser.html',
 			       conf = app.config,
 			       form = form)
                                
@@ -396,6 +427,95 @@ def showUser(nombre):
 			       conf = app.config,
 			       form = form)
 
+
+# ADMINISTRAR ROL
+
+@app.route('/listRolPermiso', methods=['GET','POST'])
+def listRolPermiso():
+    
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        return render_template(app.config['DEFAULT_TPL']+'/listRolPermiso.html',
+                           conf = app.config,
+                           list = Rol.query.all(),)
+
+
+@app.route('/addRol', methods=['GET','POST'])
+def addRol():
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+	if request.method == 'POST':
+            form = CreateFormRol(request.form, nombre = request.form['nombre'], 
+                        ambito = request.form['ambito'],
+                        descripcion = request.form['descripcion'])
+            if form.validate():
+                rol = Rol(nombre = request.form['nombre'],
+                        ambito = request.form['ambito'],
+                        descripcion = request.form['descripcion'])    
+                db.session.add(rol)
+                db.session.commit()
+
+                flash('Se ha creado correctamente el rol')
+                return redirect(url_for('listRolPermiso'))
+            else:
+                return render_template(app.config['DEFAULT_TPL']+'/formRol.html',
+			       conf = app.config,
+			       form = form)
+    return render_template(app.config['DEFAULT_TPL']+'/formRol.html',
+			       conf = app.config,
+			       form = CreateFormRol())
+
+
+@app.route('/showRol/<path:nombre>.html', methods=['GET','POST'])
+def showRol(nombre):
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        rol = Rol.query.filter(Rol.nombre == nombre).first_or_404()
+        form = CreateFormRol(request.form, nombre = rol.nombre, 
+                    ambito = rol.ambito,
+                    descripcion = rol.descripcion)
+        if request.method == 'POST':
+            if request.form.get('edit', None) == "Modificar Rol":
+                return redirect(url_for('editRol', nombre = rol.nombre))
+            elif request.form.get('delete', None) == "Eliminar Rol":
+                return redirect(url_for('deleteRol', nombre = rol.nombre))
+	return render_template(app.config['DEFAULT_TPL']+'/showRol.html',
+			       conf = app.config,
+			       form = form)
+
+
+@app.route('/editRol/<path:nombre>.html', methods=['GET','POST'])
+def editRol(nombre):
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        rol = Rol.query.filter(Rol.nombre == nombre).first_or_404()
+        form = CreateFormRol(request.form, nombre = rol.nombre, 
+                    ambito = rol.ambito,    
+                    descripcion = rol.descripcion)
+	if request.method == 'POST' and form.validate():
+            rol.nombre = request.form['nombre']
+            rol.ambito = request.form['ambito']
+            rol.descripcion = request.form['descripcion']
+
+            db.session.commit()
+            flash('Se ha modificado correctamente el rol')
+            return redirect(url_for('listRolPermiso'))
+    return render_template(app.config['DEFAULT_TPL']+'/formRol.html',
+			       conf = app.config,
+			       form = form)
+
+
+@app.route('/deleteRol/<path:nombre>.html')
+def deleteRol(nombre):
+        rol = Rol.query.filter(Rol.nombre == nombre).first_or_404()
+        db.session.delete(rol)
+        db.session.commit()
+        flash('Se ha borrado correctamente')
+        return redirect(url_for('listRolPermiso'))
 
 
 # ADMINISTRAR PROYECTO
