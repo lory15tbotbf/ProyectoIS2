@@ -34,7 +34,12 @@
             {{ form.obs.label(style="float: left; width: 100px;") }}
             {{form.obs(class="form-input", style="width:100px") }}
             {% for error in form.obs.errors %} {{ error }} {% endfor %}
+            <br />
+            {{ form.estado.label(style="float: left; width: 100px;") }}
+            {{form.estado(class="form-input", style="width:100px", readonly="readonly") }}
+            {% for error in form.obs.errors %} {{ error }} {% endfor %}
       </dl>
       <p><input type="submit" value="Crear">
+          <input type="button" value="Cancelar" onclick="javascript:history.back();"><p>
     </form>
 {% endblock %}

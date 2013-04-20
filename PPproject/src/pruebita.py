@@ -5,18 +5,22 @@
 import os
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, g, \
-     session, flash
+     session, flash, escape, request
 from werkzeug.routing import Rule
+from werkzeug.datastructures import CallbackDict
+from flask.sessions import SessionInterface, SessionMixin
+from itsdangerous import URLSafeTimedSerializer, BadSignature
 from flaskext.sqlalchemy import SQLAlchemy
 from wtforms import Form, TextField, FileField, PasswordField, \
      validators, IntegerField, SelectField, SubmitField, DateTimeField
-
 import unittest
 #------------------------------------------------------------------------------#
 # FLASK APP
 #------------------------------------------------------------------------------#
 # Flask application and config
 app = Flask(__name__)
+app.secret_key = 'A0Zr234j234yXR~XasdN]LWRT'
+#app.session_interface = ItsdangerousSessionInterface()
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
@@ -186,6 +190,51 @@ class RolXPermiso(db.Model):
         self.idRol = idRol
         self.idPermiso = idPermiso
 
+class ItsdangerousSession(CallbackDict, SessionMixin):
+ 
+    def __init__(self, initial=None):
+        def on_update(self):
+            self.modified = True
+        CallbackDict.__init__(self, initial, on_update)
+        self.modified = False
+ 
+ 
+class ItsdangerousSessionInterface(SessionInterface):
+    salt = 'cookie-session'
+    session_class = ItsdangerousSession
+ 
+    def get_serializer(self, app):
+        if not app.secret_key:
+            return None
+        return URLSafeTimedSerializer(app.secret_key,
+                                      salt=self.salt)
+ 
+    def open_session(self, app, request):
+        s = self.get_serializer(app)
+        if s is None:
+            return None
+        val = request.cookies.get(app.session_cookie_name)
+        if not val:
+            return self.session_class()
+        max_age = app.permanent_session_lifetime.total_seconds()
+        try:
+            data = s.loads(val, max_age=max_age)
+            return self.session_class(data)
+        except BadSignature:
+            return self.session_class()
+ 
+    def save_session(self, app, session, response):
+        domain = self.get_cookie_domain(app)
+        if not session:
+            if session.modified:
+                response.delete_cookie(app.session_cookie_name,
+                                   domain=domain)
+            return
+        expires = self.get_expiration_time(app, session)
+        val = self.get_serializer(app).dumps(dict(session))
+        response.set_cookie(app.session_cookie_name, val,
+                            expires=expires, httponly=True,
+                            domain=domain)
         
 #------------------------------------------------------------------------------#
 # FORMS
@@ -200,7 +249,7 @@ class CreateFormUser(Form):
     email = TextField('Email', [validators.required()])
     telefono = IntegerField('Telefono', [validators.required()])
     obs = TextField('Obs', [validators.required()])
-
+    estado = TextField('Estado', [validators.required()])
 
 class CreateFormProject(Form):
     """ Formulario para crear proyecto"""
@@ -210,7 +259,24 @@ class CreateFormProject(Form):
     fechaDeInicio = DateTimeField('FechaDeInicio', format='%d-%m-%Y %H:%M:%S')
     fechaDeFin = DateTimeField('FechaDeFin', format='%d-%m-%Y %H:%M:%S')
     
+class CreateFormAtrib(Form):
+    """ Formulario para crear un atributo"""
+    nombre = TextField('Nombre', [validators.required(),validators.Length(min=1, max=45)])
+    tipoDeDato = SelectField("Tipo de Dato", choices = [
+        ("Numerico", "Numerico"),
+        ("Texto", "Texto"),
+        ("Booleano", "Booleano"),
+        ("Fecha", "Fecha")])
+    detalle = IntegerField('Detalle', [validators.required()])
+    descripcion = TextField('Descripcion', [validators.required(), validators.Length(min=1, max=150)])
     
+class ShowFormAtrib(Form):
+    """ Formulario para mostrar un atributo"""
+    nombre = TextField('Nombre', [validators.required(),validators.Length(min=1, max=45)])
+    tipoDeDato = TextField("Tipo de Dato", [validators.required()])
+    detalle = IntegerField('Detalle', [validators.required()])
+    descripcion = TextField('Descripcion', [validators.required(),validators.Length(min=1, max=150)])
+
    
 class LoginForm(Form):
     """ Formulario de logueo """
@@ -219,6 +285,7 @@ class LoginForm(Form):
 
 
 class EditStateForm(Form):
+    """ Formulario de modificacion de estado de usuario """
     estado = SelectField("Estado", choices = [
         ("Inactivo", "Inactivo"),
         ("Activo", "Activo")])
@@ -237,7 +304,7 @@ def check_user_status():
 
 @app.route('/')
 def index():
-        return render_template(app.config['DEFAULT_TPL']+'/index.html',
+    return render_template(app.config['DEFAULT_TPL']+'/index.html',
 			    conf = app.config,
 			    users = User.query.order_by(User.name.desc()).all(),)
                             
@@ -273,6 +340,7 @@ def logout():
         session.pop('logged_in', None)
         session.pop('user_id', None)
         session.pop('user_name', None)
+        session["__invalidate__"] = True
         flash('Usted se ha desconectado')
     return redirect(url_for('index'))
 
@@ -286,13 +354,15 @@ def rolPermiso():
 
 @app.route('/administracion', methods=['GET','POST'])
 def administracion():
-     return render_template(app.config['DEFAULT_TPL']+'/administracion.html',
+    """ Modulo Administracion """
+    return render_template(app.config['DEFAULT_TPL']+'/administracion.html',
 			    conf = app.config,)
                                              
 
 @app.route('/gestion', methods=['GET','POST'])
 def gestion():
-     return render_template(app.config['DEFAULT_TPL']+'/gestion.html',
+    """ Modulo Gestion """
+    return render_template(app.config['DEFAULT_TPL']+'/gestion.html',
 			    conf = app.config,)
 
 
@@ -316,6 +386,7 @@ def addUser():
 
 @app.route('/deleteUser/<path:nombre>.html')
 def deleteUser(nombre):
+        """ Elimina un usuario """
         user = User.query.filter(User.name == nombre).first_or_404()
         db.session.delete(user)
         db.session.commit()
@@ -325,6 +396,7 @@ def deleteUser(nombre):
 
 @app.route('/edit/<path:nombre>.html', methods=['GET','POST'])
 def editState(nombre):
+    """ Modifica el estado de un usuario """
     if g.user is None:
         return redirect(url_for('login'))
     else:
@@ -341,6 +413,7 @@ def editState(nombre):
 
 @app.route('/listEdit')
 def listEdit():
+    """ Lista todos los usuarios usuario """
     if g.user is None:
         return redirect(url_for('login'))
     else:
@@ -351,6 +424,7 @@ def listEdit():
 
 @app.route('/editUser/<path:nombre>.html', methods=['GET','POST'])
 def editUser(nombre):
+    """ Modifica los datos de un usuario """
     if g.user is None:
         return redirect(url_for('login'))
     else:
@@ -359,7 +433,7 @@ def editUser(nombre):
                password = user.passwd, nombre = user.nombre,
                apellido = user.apellido, email = user.email,
                telefono = user.telefono, obs = user.obs)
-	if request.method == 'POST' and form.validate:
+	if request.method == 'POST' and form.validate():
             user.name = request.form['name']
             user.passwd = request.form['password']
             user.nombre = request.form['nombre'] 
@@ -377,6 +451,7 @@ def editUser(nombre):
 
 @app.route('/showUser/<path:nombre>.html', methods=['GET','POST'])
 def showUser(nombre):
+    """ Muestra los datos de un usuario """
     if g.user is None:
         return redirect(url_for('login'))
     else:
@@ -384,7 +459,8 @@ def showUser(nombre):
         form = CreateFormUser(request.form, name = user.name, 
                password = user.passwd, nombre = user.nombre,
                apellido = user.apellido, email = user.email,
-               telefono = user.telefono, obs = user.obs)
+               telefono = user.telefono, obs = user.obs,
+               estado = user.estado)
         if request.method == 'POST':
             if request.form.get('edit', None) == "Modificar Usuario":
                 return redirect(url_for('editUser', nombre = user.name))
@@ -476,10 +552,89 @@ def addProject():
 			       conf = app.config,
 			       form = CreateFormProject())
 
+@app.route('/listAtrib')
+def listAtrib():
+    """ Lista todos los tipos de atributo """
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        return render_template(app.config['DEFAULT_TPL']+'/listAtrib.html',
+                           conf = app.config,
+                           list = TipoDeAtributo.query.all(),) 
+                           
+@app.route('/addAtrib', methods=['GET','POST'])
+def addAtrib():
+    """ Agrega un nuevo tipo de atributo """
+    if request.method == 'POST':
+        form = CreateFormAtrib(request.form, nombre = request.form['nombre'], 
+                tipoDeDato = request.form['tipoDeDato'], 
+                detalle = request.form['detalle'], 
+                descripcion = request.form['descripcion']) 
+        if form.validate():
+                atrib = TipoDeAtributo(nombre = request.form['nombre'], tipoDeDato = request.form['tipoDeDato'],
+                detalle = request.form['detalle'], descripcion = request.form['descripcion'])    
+                db.session.add(atrib)
+		db.session.commit()
+                flash('Se ha creado correctamente el atributo')
+		return redirect(url_for('listAtrib'))
+        else:
+                return render_template(app.config['DEFAULT_TPL']+'/addAtrib.html',
+			       conf = app.config,
+			       form = form)
+    return render_template(app.config['DEFAULT_TPL']+'/addAtrib.html',
+			       conf = app.config,
+			       form = CreateFormAtrib())
+                               
+@app.route('/showAtrib/<path:nombre>.html', methods=['GET','POST'])
+def showAtrib(nombre):
+    """ Muestra los datos de un atributo """
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        atrib = TipoDeAtributo.query.filter(TipoDeAtributo.nombre == nombre).first_or_404()
+        form = ShowFormAtrib(request.form, nombre = atrib.nombre,
+               tipoDeDato = atrib.tipoDeDato, detalle = atrib.detalle, 
+               descripcion = atrib.descripcion)
+        if request.method == 'POST':
+            if request.form.get('edit', None) == "Modificar Atributo":
+                return redirect(url_for('editAtrib', nombre = atrib.nombre))
+            elif request.form.get('delete', None) == "Eliminar Atributo":
+                return redirect(url_for('deleteAtrib', nombre = atrib.nombre))
+	return render_template(app.config['DEFAULT_TPL']+'/showAtrib.html',
+			       conf = app.config,
+			       form = form)
+                               
+@app.route('/editAtrib/<path:nombre>.html', methods=['GET','POST'])
+def editAtrib(nombre):
+    """ Modifica los datos de un atributo """
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        atrib = TipoDeAtributo.query.filter(TipoDeAtributo.nombre == nombre).first_or_404()
+        form = CreateFormAtrib(request.form, nombre = atrib.nombre,
+               tipoDeDato = atrib.tipoDeDato, detalle = atrib.detalle, 
+               descripcion = atrib.descripcion)
+	if request.method == 'POST' and form.validate():
+            atrib.nombre = request.form['nombre'] 
+            atrib.tipoDeDato = request.form['tipoDeDato']
+            atrib.detalle = request.form['detalle'] 
+            atrib.descripcion = request.form['descripcion']
+            db.session.commit()
+            flash('Se ha modificado correctamente el atributo')
+            return redirect(url_for('listAtrib'))
+    return render_template(app.config['DEFAULT_TPL']+'/editAtrib.html',
+			       conf = app.config,
+			       form = form)
+                               
+
 #------------------------------------------------------------------------------#
 # MAIN
 #------------------------------------------------------------------------------#
 if __name__ == '__main__':
+    #app.session_interface = ItsdangerousSessionInterface()
     app.run()
+    
+    
+
 
 
