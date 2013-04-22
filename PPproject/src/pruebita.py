@@ -5,18 +5,22 @@
 import os
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, g, \
-     session, flash
+     session, flash, escape, request
 from werkzeug.routing import Rule
+from werkzeug.datastructures import CallbackDict
+from flask.sessions import SessionInterface, SessionMixin
+#from itsdangerous import URLSafeTimedSerializer, BadSignature
 from flaskext.sqlalchemy import SQLAlchemy
 from wtforms import Form, TextField, FileField, PasswordField, \
      validators, IntegerField, SelectField, SubmitField, DateTimeField
-
 import unittest
 #------------------------------------------------------------------------------#
 # FLASK APP
 #------------------------------------------------------------------------------#
 # Flask application and config
 app = Flask(__name__)
+app.secret_key = 'A0Zr234j234yXR~XasdN]LWRT'
+#app.session_interface = ItsdangerousSessionInterface()
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
@@ -202,6 +206,17 @@ class LoginForm(Form):
 
 class CreateFormUser(Form):
     """ Formulario para crear un usuario"""
+    name = TextField('Name', [validators.required(), validators.Length(min=1, max=10)])
+    password = PasswordField('Password', [validators.required(), validators.Length(min=1, max=15)])
+    confirmacion = PasswordField('Confirmacion', [validators.EqualTo('password')])
+    nombre = TextField('Nombre', [validators.required(), validators.Length(min=1, max=45)])
+    apellido = TextField('Apellido', [validators.required(), validators.Length(min=1, max=45)])
+    email = TextField('Email', [validators.required(), validators.Length(min=1, max=45), validators.Email()])
+    telefono = IntegerField('Telefono', [validators.required(), validators.NumberRange(min=None, max=None, message=None)])
+    obs = TextField('Obs', [validators.required()])
+
+class ShowFormUser(Form):
+    """ Formulario para crear un usuario"""
     name = TextField('Name', [validators.required()])
     password = PasswordField('Password', [validators.required()])
     nombre = TextField('Nombre', [validators.required()])
@@ -209,10 +224,17 @@ class CreateFormUser(Form):
     email = TextField('Email', [validators.required()])
     telefono = IntegerField('Telefono', [validators.required()])
     obs = TextField('Obs', [validators.required()])
+    estado = TextField('Estado', [validators.required()])
+
+class CreateFormRol(Form):
+    """ Formulario para crear rol"""
+    nombre = TextField('Nombre', [validators.required(), validators.Length(min=1, max=45)])
+    ambito = TextField('Ambito', [validators.required(), validators.Length(min=1, max=45)])
+    descripcion = TextField('Descripcion', [validators.required(), validators.Length(min=1, max=45)])
 
 
 class EditStateForm(Form):
-    """ Formulario para editar estado de usuario """
+    """ Formulario de modificacion de estado de usuario """
     estado = SelectField("Estado", choices = [
         ("Inactivo", "Inactivo"),
         ("Activo", "Activo")])
@@ -227,6 +249,25 @@ class CreateFormProject(Form):
     fechaDeInicio = DateTimeField('FechaDeInicio',[validators.Length(min=1, max=45)])
     fechaDeFin = DateTimeField('FechaDeFin', [validators.Length(min=1, max=45)])
  
+# Administrar tipo de atributos
+
+class CreateFormAtrib(Form):
+    """ Formulario para crear un atributo"""
+    nombre = TextField('Nombre', [validators.required(),validators.Length(min=1, max=45)])
+    tipoDeDato = SelectField("Tipo de Dato", choices = [
+        ("Numerico", "Numerico"),
+        ("Texto", "Texto"),
+        ("Booleano", "Booleano"),
+        ("Fecha", "Fecha")])
+    detalle = IntegerField('Detalle', [validators.required()])
+    descripcion = TextField('Descripcion', [validators.required(), validators.Length(min=1, max=150)])
+    
+class ShowFormAtrib(Form):
+    """ Formulario para mostrar un atributo"""
+    nombre = TextField('Nombre', [validators.required(),validators.Length(min=1, max=45)])
+    tipoDeDato = TextField("Tipo de Dato", [validators.required()])
+    detalle = IntegerField('Detalle', [validators.required()])
+    descripcion = TextField('Descripcion', [validators.required(),validators.Length(min=1, max=150)])
 
 #------------------------------------------------------------------------------#
 # CONTROLLERS
@@ -241,7 +282,7 @@ def check_user_status():
 
 @app.route('/')
 def index():
-        return render_template(app.config['DEFAULT_TPL']+'/index.html',
+    return render_template(app.config['DEFAULT_TPL']+'/index.html',
 			    conf = app.config,
 			    users = User.query.order_by(User.name.desc()).all(),)
                             
@@ -279,6 +320,7 @@ def logout():
         session.pop('logged_in', None)
         session.pop('user_id', None)
         session.pop('user_name', None)
+        session["__invalidate__"] = True
         flash('Usted se ha desconectado')
     return redirect(url_for('index'))
 
@@ -288,13 +330,15 @@ def logout():
 
 @app.route('/administracion', methods=['GET','POST'])
 def administracion():
-     return render_template(app.config['DEFAULT_TPL']+'/administracion.html',
+    """ Modulo Administracion """
+    return render_template(app.config['DEFAULT_TPL']+'/administracion.html',
 			    conf = app.config,)
                                              
 
 @app.route('/gestion', methods=['GET','POST'])
 def gestion():
-     return render_template(app.config['DEFAULT_TPL']+'/gestion.html',
+    """ Modulo Gestion """
+    return render_template(app.config['DEFAULT_TPL']+'/gestion.html',
 			    conf = app.config,)
 
 
@@ -302,22 +346,46 @@ def gestion():
 
 @app.route('/addUser', methods=['GET','POST'])
 def addUser():
-    if request.method == 'POST':
-        user = User(name = request.form['name'], passwd = request.form['password'],
-        nombre = request.form['nombre'], apellido = request.form['apellido'],
-        email = request.form['email'], telefono = request.form['telefono'], 
-        obs = request.form['obs'])    
-        db.session.add(user)
-        db.session.commit()
-        flash('Se ha creado correctamente el usuario')
-        return redirect(url_for('listEdit'))
+    """Controlador para crear usuario"""
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        if request.method == 'POST':
+            form = CreateFormUser(request.form, name = request.form['name'],
+                        password = request.form['password'],
+                        confirmacion = request.form['confirmacion'],
+                        nombre = request.form['nombre'],
+                        apellido = request.form['apellido'],
+                        email = request.form['email'],
+                        telefono = request.form['telefono'],
+                        obs = request.form['obs'])
+            if form.validate():
+                user = User(name = request.form['name'],
+                            passwd = request.form['password'],
+                            nombre = request.form['nombre'],
+                            apellido = request.form['apellido'],
+                            email = request.form['email'],
+                            telefono = request.form['telefono'],
+                            obs = request.form['obs'])
+                
+                db.session.add(user)
+                db.session.commit()
+                
+                flash('Se ha creado correctamente el usuario')
+                return redirect(url_for('listEdit'))
+            else:
+                return render_template(app.config['DEFAULT_TPL']+'/formUser.html',
+                            conf = app.config,
+                            form = form)
     return render_template(app.config['DEFAULT_TPL']+'/formUser.html',
-			       conf = app.config,
-			       form = CreateFormUser())
+                conf = app.config,
+                form = CreateFormUser())
+
 
 
 @app.route('/deleteUser/<path:nombre>.html')
 def deleteUser(nombre):
+        """ Elimina un usuario """
         user = User.query.filter(User.name == nombre).first_or_404()
         db.session.delete(user)
         db.session.commit()
@@ -327,6 +395,7 @@ def deleteUser(nombre):
 
 @app.route('/edit/<path:nombre>.html', methods=['GET','POST'])
 def editState(nombre):
+    """ Modifica el estado de un usuario """
     if g.user is None:
         return redirect(url_for('login'))
     else:
@@ -343,6 +412,7 @@ def editState(nombre):
 
 @app.route('/listEdit')
 def listEdit():
+    """ Lista todos los usuarios usuario """
     if g.user is None:
         return redirect(url_for('login'))
     else:
@@ -353,40 +423,48 @@ def listEdit():
 
 @app.route('/editUser/<path:nombre>.html', methods=['GET','POST'])
 def editUser(nombre):
+    """ Modifica los datos de un usuario """
     if g.user is None:
         return redirect(url_for('login'))
     else:
         user = User.query.filter(User.name == nombre).first_or_404()
-        form = CreateFormUser(request.form, name = user.name, 
-               password = user.passwd, nombre = user.nombre,
-               apellido = user.apellido, email = user.email,
-               telefono = user.telefono, obs = user.obs)
-	if request.method == 'POST' and form.validate:
+        form = CreateFormUser(request.form, name = user.name,
+                        password = user.passwd,
+                        confirmacion = user.passwd,
+                        nombre = user.nombre,
+                        apellido = user.apellido,
+                        email = user.email,
+                        telefono = user.telefono,
+                        obs = user.obs)
+	if request.method == 'POST' and form.validate():
             user.name = request.form['name']
             user.passwd = request.form['password']
-            user.nombre = request.form['nombre'] 
+            user.nombre = request.form['nombre']
             user.apellido = request.form['apellido']
             user.email = request.form['email']
-            user.telefono = request.form['telefono'] 
+            user.telefono = request.form['telefono']
             user.obs = request.form['obs']
+
             db.session.commit()
             flash('Se ha modificado correctamente el usuario')
             return redirect(url_for('listEdit'))
-    return render_template(app.config['DEFAULT_TPL']+'/editUser.html',
+    return render_template(app.config['DEFAULT_TPL']+'/formUser.html',
 			       conf = app.config,
 			       form = form)
                                
 
 @app.route('/showUser/<path:nombre>.html', methods=['GET','POST'])
 def showUser(nombre):
+    """ Muestra los datos de un usuario """
     if g.user is None:
         return redirect(url_for('login'))
     else:
         user = User.query.filter(User.name == nombre).first_or_404()
-        form = CreateFormUser(request.form, name = user.name, 
+        form = ShowFormUser(request.form, name = user.name, 
                password = user.passwd, nombre = user.nombre,
                apellido = user.apellido, email = user.email,
-               telefono = user.telefono, obs = user.obs)
+               telefono = user.telefono, obs = user.obs,
+               estado = user.estado)
         if request.method == 'POST':
             if request.form.get('edit', None) == "Modificar Usuario":
                 return redirect(url_for('editUser', nombre = user.name))
@@ -398,6 +476,95 @@ def showUser(nombre):
 			       conf = app.config,
 			       form = form)
 
+
+# ADMINISTRAR ROL
+
+@app.route('/listRolPermiso', methods=['GET','POST'])
+def listRolPermiso():
+    
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        return render_template(app.config['DEFAULT_TPL']+'/listRolPermiso.html',
+                           conf = app.config,
+                           list = Rol.query.all(),)
+
+
+@app.route('/addRol', methods=['GET','POST'])
+def addRol():
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+	if request.method == 'POST':
+            form = CreateFormRol(request.form, nombre = request.form['nombre'], 
+                        ambito = request.form['ambito'],
+                        descripcion = request.form['descripcion'])
+            if form.validate():
+                rol = Rol(nombre = request.form['nombre'],
+                        ambito = request.form['ambito'],
+                        descripcion = request.form['descripcion'])    
+                db.session.add(rol)
+                db.session.commit()
+
+                flash('Se ha creado correctamente el rol')
+                return redirect(url_for('listRolPermiso'))
+            else:
+                return render_template(app.config['DEFAULT_TPL']+'/formRol.html',
+			       conf = app.config,
+			       form = form)
+    return render_template(app.config['DEFAULT_TPL']+'/formRol.html',
+			       conf = app.config,
+			       form = CreateFormRol())
+
+
+@app.route('/showRol/<path:nombre>.html', methods=['GET','POST'])
+def showRol(nombre):
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        rol = Rol.query.filter(Rol.nombre == nombre).first_or_404()
+        form = CreateFormRol(request.form, nombre = rol.nombre, 
+                    ambito = rol.ambito,
+                    descripcion = rol.descripcion)
+        if request.method == 'POST':
+            if request.form.get('edit', None) == "Modificar Rol":
+                return redirect(url_for('editRol', nombre = rol.nombre))
+            elif request.form.get('delete', None) == "Eliminar Rol":
+                return redirect(url_for('deleteRol', nombre = rol.nombre))
+	return render_template(app.config['DEFAULT_TPL']+'/showRol.html',
+			       conf = app.config,
+			       form = form)
+
+
+@app.route('/editRol/<path:nombre>.html', methods=['GET','POST'])
+def editRol(nombre):
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        rol = Rol.query.filter(Rol.nombre == nombre).first_or_404()
+        form = CreateFormRol(request.form, nombre = rol.nombre, 
+                    ambito = rol.ambito,    
+                    descripcion = rol.descripcion)
+	if request.method == 'POST' and form.validate():
+            rol.nombre = request.form['nombre']
+            rol.ambito = request.form['ambito']
+            rol.descripcion = request.form['descripcion']
+
+            db.session.commit()
+            flash('Se ha modificado correctamente el rol')
+            return redirect(url_for('listRolPermiso'))
+    return render_template(app.config['DEFAULT_TPL']+'/formRol.html',
+			       conf = app.config,
+			       form = form)
+
+
+@app.route('/deleteRol/<path:nombre>.html')
+def deleteRol(nombre):
+        rol = Rol.query.filter(Rol.nombre == nombre).first_or_404()
+        db.session.delete(rol)
+        db.session.commit()
+        flash('Se ha borrado correctamente')
+        return redirect(url_for('listRolPermiso'))
 
 
 # ADMINISTRAR PROYECTO
@@ -483,10 +650,96 @@ def addProject():
 			       conf = app.config,
 			       form = CreateFormProject())
 
+@app.route('/listAtrib')
+def listAtrib():
+    """ Lista todos los tipos de atributo """
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        return render_template(app.config['DEFAULT_TPL']+'/listAtrib.html',
+                           conf = app.config,
+                           list = TipoDeAtributo.query.all(),) 
+                           
+@app.route('/addAtrib', methods=['GET','POST'])
+def addAtrib():
+    """ Agrega un nuevo tipo de atributo """
+    if request.method == 'POST':
+        form = CreateFormAtrib(request.form, nombre = request.form['nombre'], 
+                tipoDeDato = request.form['tipoDeDato'], 
+                detalle = request.form['detalle'], 
+                descripcion = request.form['descripcion']) 
+        if form.validate():
+                atrib = TipoDeAtributo(nombre = request.form['nombre'], tipoDeDato = request.form['tipoDeDato'],
+                detalle = request.form['detalle'], descripcion = request.form['descripcion'])    
+                db.session.add(atrib)
+		db.session.commit()
+                flash('Se ha creado correctamente el atributo')
+		return redirect(url_for('listAtrib'))
+        else:
+                return render_template(app.config['DEFAULT_TPL']+'/addAtrib.html',
+			       conf = app.config,
+			       form = form)
+    return render_template(app.config['DEFAULT_TPL']+'/addAtrib.html',
+			       conf = app.config,
+			       form = CreateFormAtrib())
+                               
+@app.route('/showAtrib/<path:nombre>.html', methods=['GET','POST'])
+def showAtrib(nombre):
+    """ Muestra los datos de un atributo """
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        atrib = TipoDeAtributo.query.filter(TipoDeAtributo.nombre == nombre).first_or_404()
+        form = ShowFormAtrib(request.form, nombre = atrib.nombre,
+               tipoDeDato = atrib.tipoDeDato, detalle = atrib.detalle, 
+               descripcion = atrib.descripcion)
+        if request.method == 'POST':
+            if request.form.get('edit', None) == "Modificar Atributo":
+                return redirect(url_for('editAtrib', nombre = atrib.nombre))
+            elif request.form.get('delete', None) == "Eliminar Atributo":
+                return redirect(url_for('deleteAtrib', nombre = atrib.nombre))
+	return render_template(app.config['DEFAULT_TPL']+'/showAtrib.html',
+			       conf = app.config,
+			       form = form)
+                               
+@app.route('/editAtrib/<path:nombre>.html', methods=['GET','POST'])
+def editAtrib(nombre):
+    """ Modifica los datos de un atributo """
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        atrib = TipoDeAtributo.query.filter(TipoDeAtributo.nombre == nombre).first_or_404()
+        form = CreateFormAtrib(request.form, nombre = atrib.nombre,
+               tipoDeDato = atrib.tipoDeDato, detalle = atrib.detalle, 
+               descripcion = atrib.descripcion)
+	if request.method == 'POST' and form.validate():
+            atrib.nombre = request.form['nombre'] 
+            atrib.tipoDeDato = request.form['tipoDeDato']
+            atrib.detalle = request.form['detalle'] 
+            atrib.descripcion = request.form['descripcion']
+            db.session.commit()
+            flash('Se ha modificado correctamente el atributo')
+            return redirect(url_for('listAtrib'))
+    return render_template(app.config['DEFAULT_TPL']+'/editAtrib.html',
+			       conf = app.config,
+			       form = form)
+
+@app.route('/deleteAtrib/<path:nombre>.html')
+def deleteAtrib(nombre):
+        atrib = TipoDeAtributo.query.filter(TipoDeAtributo.nombre == nombre).first_or_404()
+        db.session.delete(atrib)
+        db.session.commit()
+        flash('Se ha borrado correctamente')
+        return redirect(url_for('listAtrib'))
+
 #------------------------------------------------------------------------------#
 # MAIN
 #------------------------------------------------------------------------------#
 if __name__ == '__main__':
+    #app.session_interface = ItsdangerousSessionInterface()
     app.run()
+    
+    
+
 
 
