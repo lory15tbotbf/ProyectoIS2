@@ -32,6 +32,8 @@ app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
 # CONTROLLERS
 #------------------------------------------------------------------------------#
 
+# INGRESO AL SISTEMA
+
 @app.before_request
 def check_user_status():
     """ Checkea estatus """
@@ -91,14 +93,13 @@ def logout():
 
 
 
-#  Modulo del Sistema
+#  MODULO DE SISTEMA
 
 @app.route('/administracion', methods=['GET','POST'])
 def administracion():
     """ Modulo Administracion """
     return render_template(app.config['DEFAULT_TPL']+'/administracion.html',
-			    conf = app.config,)
-                                             
+			    conf = app.config,)                                             
 
 @app.route('/gestion', methods=['GET','POST'])
 def gestion():
@@ -111,7 +112,7 @@ def desarrollo():
     """ Modulo Desarrollo """
     return render_template(app.config['DEFAULT_TPL']+'/desarrollo.html',
 			    conf = app.config,)
-# Administracion de Usuario
+# ADMINISTRAR USUARIO
 
 @app.route('/addUser', methods=['GET','POST'])
 def addUser():
@@ -444,6 +445,9 @@ def addProject():
 			       conf = app.config,
 			       form = CreateFormProject())
 
+
+# ADMINISTRAR TIPO DE ATRIBUTO
+
 @app.route('/listAtrib')
 def listAtrib():
     """ Lista todos los tipos de atributo """
@@ -537,6 +541,8 @@ def deleteAtrib(nombre):
 #------------------------------------------------------------------------------#
 # MAIN
 #------------------------------------------------------------------------------#
+
+
 if __name__ == '__main__':
     app.run()
     

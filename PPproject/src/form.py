@@ -36,19 +36,22 @@ class ShowFormUser(Form):
     obs = TextField('Obs', [validators.required()])
     estado = TextField('Estado', [validators.required()])
 
-class CreateFormRol(Form):
-    """ Formulario para crear rol"""
-    nombre = TextField('Nombre', [validators.required(), validators.Length(min=1, max=45)])
-    ambito = TextField('Ambito', [validators.required(), validators.Length(min=1, max=45)])
-    descripcion = TextField('Descripcion', [validators.required(), validators.Length(min=1, max=45)])
-
-
 class EditStateForm(Form):
     """ Formulario de modificacion de estado de usuario """
     estado = SelectField("Estado", choices = [
         ("Inactivo", "Inactivo"),
         ("Activo", "Activo")])
     submit = SubmitField("POST")
+
+
+# Administrar RolXPermiso
+
+class CreateFormRol(Form):
+    """ Formulario para crear rol"""
+    nombre = TextField('Nombre', [validators.required(), validators.Length(min=1, max=45)])
+    ambito = TextField('Ambito', [validators.required(), validators.Length(min=1, max=45)])
+    descripcion = TextField('Descripcion', [validators.required(), validators.Length(min=1, max=45)])
+
 
 # Administrar Proyecto
 
