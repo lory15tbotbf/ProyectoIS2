@@ -1,6 +1,8 @@
 from flask.ext.script import Manager
 from pruebita import app, db
 
+import models
+
 manager = Manager(app)
 
 """ Administra la Base de Datos """
@@ -14,7 +16,7 @@ def initdb():
 @manager.command
 def createAdministrador():
     """ crea el usuario Admin """ 
-    from pruebita import User
+    from models import User
     u=User("admin","admin")
     db.session.add(u)
     db.session.commit()
@@ -22,7 +24,7 @@ def createAdministrador():
 @manager.command
 def createRol():
     """ Crear Roles de Sistema Pre establecidos """
-    from pruebita import Rol
+    from models import Rol
     r=Rol("Administrador", "Permite el acceso al Modulo de Administracion")
     db.session.add(r)
     db.session.commit()
@@ -39,7 +41,7 @@ def createRol():
 @manager.command
 def createPermiso():
     """Crear Permisos Predefinidos """ 
-    from pruebita import Permiso
+    from models import Permiso
     # Los permisos a Nivel de Sistema son
     p=Permiso("CrearProyecto","Permite crear un proyecto en el sistema")
     db.session.add(p)
