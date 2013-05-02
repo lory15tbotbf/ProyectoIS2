@@ -11,39 +11,30 @@ manager = Manager(app)
 def initdb():
     """ Inicializar base de datos """
     db.create_all()
-    createAdministrador()
     createUser()
     createPermiso()
     createRol()
     createProject()
     createTipoDeAtrib()
 
-
-@manager.command
-def createAdministrador():
-    """ crea el usuario Admin """ 
-    from models import User
-    u=User("admin","admin","administrador","administrador","admin@gmail.com",1234,"usuario administrador")
-    db.session.add(u)
-    db.session.commit()
  
 @manager.command
 def createUser():
     """ crea usuarios """ 
     from models import User
-    u1=User("stfy","stfy","estefanis","zamora","stfy@gmail.com",1111,"usuario nuevo")
-    db.session.add(u1)
-    db.session.commit()
-    u2=User("vavi","vavi","victor","vera","vavi@gmail.com",2222,"usuario nuevo")
-    db.session.add(u2)
-    db.session.commit()
-    u3=User("lory","lory","lorelay","ortiz","lory@gmail.com",3333,"usuario nuevo")
-    db.session.add(u3)
-    db.session.commit()
-    u4=User("guille","guille","guillermo","gonzalez","guille@gmail.com",4444,"usuario nuevo")
-    db.session.add(u4)
-    db.session.commit()
-    
+    from ctrl.mgrUser import MgrUser
+    u = User("admin","admin","administrador","administrador","admin@gmail.com",1234,"usuario administrador")
+    MgrUser().guardar(u)
+    u=User("stfy","stfy","estefanis","zamora","stfy@gmail.com",1111,"usuario nuevo")
+    MgrUser().guardar(u)
+    u=User("vavi","vavi","victor","vera","vavi@gmail.com",2222,"usuario nuevo")
+    MgrUser().guardar(u)
+    u=User("lory","lory","lorelay","ortiz","lory@gmail.com",3333,"usuario nuevo")
+    MgrUser().guardar(u)
+    u=User("guille","guille","guillermo","gonzalez","guille@gmail.com",4444,"usuario nuevo")
+    MgrUser().guardar(u)
+    MgrUser().borrar("guille")
+       
 @manager.command
 def createRol():
     """ 
@@ -67,16 +58,15 @@ def createRol():
         - calculo de impacto
     """
     from models import Rol
-    r1=Rol("Administrador","permite el acceso al modulo de administracion","all project")
-    db.session.add(r1)
-    db.session.commit()
-    r2=Rol("Desarrollador","permite el acceso al modulo de desarrollo","all project")
-    db.session.add(r2)
-    db.session.commit()
-    r3=Rol("LiderDeProyecto","permite el acceso al modulo de gestion","all project")
-    db.session.add(r3)
-    db.session.commit()
-   
+    from ctrl.mgrRol import MgrRol
+    r=Rol("Administrador","permite el acceso al modulo de administracion","all project")
+    MgrRol().guardar(r)
+    r=Rol("Desarrollador","permite el acceso al modulo de desarrollo","all project")
+    MgrRol().guardar(r)
+    r=Rol("LiderDeProyecto","permite el acceso al modulo de gestion","all project")
+    MgrRol().guardar(r)
+    MgrRol().borrar("LiderDeProyecto")
+
 @manager.command
 def createPermiso():
     """
@@ -87,94 +77,75 @@ def createPermiso():
     - item
     """
     from models import Permiso
+    from ctrl.mgrPermiso import MgrPermiso
     # Los permisos a Nivel de Sistema son
     p=Permiso("CrearProyecto","Permite crear un proyecto en el sistema")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     p=Permiso("CrearUsuario","Permite crear un usuario dentro de un proyecto")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     p=Permiso("CambiarEstadoUsuario","Permite cambiar el estado de un usuario dentro del proyecto")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     p=Permiso("AdministrarTipoDeAtributo","Permite administrar un tipo de atributo")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     # Los Permisos a Nivel de Proyecto son
     p=Permiso("CrearRol","Permite crear un rol en el sistema")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     p=Permiso("AsignarRolAUsuario","Permite asignar Rol a Usuario")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     p=Permiso("AdministrarFase","Permite administrar fase en un proyecto")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     p=Permiso("ConsultaProyecto","Permite realizar consultas en un proyecto")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     # Los Permisos a Nivel de Fase son
     p=Permiso("AdministrarLineaBase","Permite administrar linea base en un proyecto")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     p=Permiso("AdministrarTiposDeItem","Permite administrar tipos de item en un proyecto")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     # Los Permisos a Nivel de Item son
     p=Permiso("AdministrarItem","Permite administrar item en un proyecto")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     p=Permiso("AdministrarCambio","Permite administrar cambio en un item de un proyecto")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     p=Permiso("AprobacionItem","Permite administrar la aprobacion de item en un proyecto")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     p=Permiso("DesaprobacionItem","Permite administrar la desaprobacion de item en un proyecto")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
     p=Permiso("ConsultaItem","Permite consulta de item en un proyecto")
-    db.session.add(p)
-    db.session.commit()
+    MgrPermiso().guardar(p)
+    MgrPermiso().borrar("ConsultaItem")
  
 @manager.command
 def createProject():
     """ crea proyectos por default """
     from models import Proyecto
+    from ctrl.mgrProject import MgrProject
     p=Proyecto("proyecto1","sistema para una veterinaria")
-    db.session.add(p)
-    db.session.commit()
+    MgrProject().guardar(p)
     p=Proyecto("proyecto2","sistema para una guarderia")
-    db.session.add(p)
-    db.session.commit()
+    MgrProject().guardar(p)
     p=Proyecto("proyecto3","sistema para un consultorio")
-    db.session.add(p)
-    db.session.commit()
+    MgrProject().guardar(p)
     p=Proyecto("proyecto4","sistema para un supermercado")
-    db.session.add(p)
-    db.session.commit()
+    MgrProject().guardar(p)
     p=Proyecto("proyecto5","sistema para un banco")
-    db.session.add(p)
-    db.session.commit()
+    MgrProject().guardar(p)
+    MgrProject().borrar("proyecto5")
     
 @manager.command
 def createTipoDeAtrib():
     from models import TipoDeAtributo
+    from ctrl.mgrTipoDeAtrib import MgrTipoDeAtrib
     t=TipoDeAtributo("numerico20", "numerico", 20,"atributo numerico con presicion 20")
-    db.session.add(t)
-    db.session.commit()
+    MgrTipoDeAtrib().guardar(t)
     t=TipoDeAtributo("texto45", "texto", 45,"atributo texto con 45 caracteres")
-    db.session.add(t)
-    db.session.commit()
+    MgrTipoDeAtrib().guardar(t)
     t=TipoDeAtributo("date", "fecha", 0,"atributo fecha")
-    db.session.add(t)
-    db.session.commit()
+    MgrTipoDeAtrib().guardar(t)
     t=TipoDeAtributo("booleano", "boolean", 0,"atributo boleano")
-    db.session.add(t)
-    db.session.commit()
+    MgrTipoDeAtrib().guardar(t)
     t=TipoDeAtributo("numerico45", "numerico", 45,"atributo numerico con presicion 45")
-    db.session.add(t)
-    db.session.commit()
+    MgrTipoDeAtrib().guardar(t)
+    MgrTipoDeAtrib().borrar("date")
     
 @manager.command
 def dropdb():
