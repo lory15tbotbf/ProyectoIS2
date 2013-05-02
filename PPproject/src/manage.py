@@ -33,7 +33,7 @@ def createUser():
     MgrUser().guardar(u)
     u=User("guille","guille","guillermo","gonzalez","guille@gmail.com",4444,"usuario nuevo")
     MgrUser().guardar(u)
-    MgrUser().borrar("guille")
+    #MgrUser().borrar("guille")
        
 @manager.command
 def createRol():
@@ -65,7 +65,7 @@ def createRol():
     MgrRol().guardar(r)
     r=Rol("LiderDeProyecto","permite el acceso al modulo de gestion","all project")
     MgrRol().guardar(r)
-    MgrRol().borrar("LiderDeProyecto")
+    #MgrRol().borrar("LiderDeProyecto")
 
 @manager.command
 def createPermiso():
@@ -112,7 +112,7 @@ def createPermiso():
     MgrPermiso().guardar(p)
     p=Permiso("ConsultaItem","Permite consulta de item en un proyecto")
     MgrPermiso().guardar(p)
-    MgrPermiso().borrar("ConsultaItem")
+    #MgrPermiso().borrar("ConsultaItem")
  
 @manager.command
 def createProject():
@@ -129,7 +129,7 @@ def createProject():
     MgrProject().guardar(p)
     p=Proyecto("proyecto5","sistema para un banco")
     MgrProject().guardar(p)
-    MgrProject().borrar("proyecto5")
+    #MgrProject().borrar("proyecto5")
     
 @manager.command
 def createTipoDeAtrib():
@@ -145,7 +145,7 @@ def createTipoDeAtrib():
     MgrTipoDeAtrib().guardar(t)
     t=TipoDeAtributo("numerico45", "numerico", 45,"atributo numerico con presicion 45")
     MgrTipoDeAtrib().guardar(t)
-    MgrTipoDeAtrib().borrar("date")
+    #MgrTipoDeAtrib().borrar("date")
     
 @manager.command
 def dropdb():

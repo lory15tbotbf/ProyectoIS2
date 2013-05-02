@@ -415,9 +415,8 @@ def editProject(nombre):
 def deleteProject(nombre):
     """ Elimina un proyecto """
     from models import Proyecto
-    project = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
-    db.session.delete(project)
-    db.session.commit()
+    from ctrl.mgrProject import MgrProject
+    MgrProject().borrar(nombre)
     flash('Se ha borrado correctamente')
     return redirect(url_for('listEditProject'))
                              
@@ -427,13 +426,13 @@ def addProject():
     """ Agrega un proyecto """
     from models import Proyecto
     from form import CreateFormProject
+    from ctrl.mgrProject import MgrProject
     if g.user is None:
         return redirect(url_for('login'))
     else:
         if request.method == 'POST':
             project = Proyecto(nombre = request.form['nombre'], descripcion = request.form['descripcion'])    
-            db.session.add(project)
-            db.session.commit()
+            MgrProject().guardar(project)
             flash('Se ha creado correctamente el proyecto')
             return redirect(url_for('listEditProject'))
     return render_template(app.config['DEFAULT_TPL']+'/formProject.html',
@@ -539,6 +538,7 @@ def deleteAtrib(nombre):
 
 
 if __name__ == '__main__':
+    app.secret_key = os.urandom(24)
     app.run()
     
     
