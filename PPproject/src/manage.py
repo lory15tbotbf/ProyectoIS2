@@ -1,45 +1,90 @@
 from flask.ext.script import Manager
 from pruebita import app, db
 
+
+import models
+
 manager = Manager(app)
 
 """ Administra la Base de Datos """
-
 @manager.command
 def initdb():
     """ Inicializar base de datos """
     db.create_all()
+    createAdministrador()
+    createUser()
+    createPermiso()
+    createRol()
 
 
 @manager.command
 def createAdministrador():
     """ crea el usuario Admin """ 
-    from pruebita import User
-    u=User("admin","admin")
+    from models import User
+    u=User("admin","admin","administrador","administrador","admin@gmail.com",1234,"usuario administrador")
     db.session.add(u)
     db.session.commit()
-   
+ 
+@manager.command
+def createUser():
+    """ crea usuarios """ 
+    from models import User
+    u1=User("stfy","stfy","estefanis","zamora","stfy@gmail.com",1111,"usuario nuevo")
+    db.session.add(u1)
+    db.session.commit()
+    u2=User("vavi","vavi","victor","vera","vavi@gmail.com",2222,"usuario nuevo")
+    db.session.add(u2)
+    db.session.commit()
+    u3=User("lory","lory","lorelay","ortiz","lory@gmail.com",3333,"usuario nuevo")
+    db.session.add(u3)
+    db.session.commit()
+    u4=User("guille","guille","guillermo","gonzalez","guille@gmail.com",4444,"usuario nuevo")
+    db.session.add(u4)
+    db.session.commit()
+    
 @manager.command
 def createRol():
-    """ Crear Roles de Sistema Pre establecidos """
-    from pruebita import Rol
-    r=Rol("Administrador", "Permite el acceso al Modulo de Administracion")
-    db.session.add(r)
+    """ 
+    Crea Roles de Sistema Pre establecidos 
+    1. Administrador: -> Permite el acceso al Modulo de Administracion
+        - administra usuarios
+        - crea proyecto
+        - elimina proyecto
+        - asigna lider a proyecto
+        - administra tipo de atributo
+    2. Desarrollador: -> Permite el acceso al Modulo de Desarrollo
+        - administra item
+        - administra reportes
+    3. Lider de Proyecto: -> Permite el acceso al Modulo de Gestion de Cambio
+        - administra proyecto
+        - administra fase
+        - administra tipo de item
+        - administra roles 
+        - administra LB
+        - calculo de costo
+        - calculo de impacto
+    """
+    from models import Rol
+    r1=Rol("Administrador","permite el acceso al modulo de administracion","all project")
+    db.session.add(r1)
     db.session.commit()
-    r=Rol("LiderDeProyecto", "Permite el acceso al Modulo de Gestion de Cambio")
-    db.session.add(r)
+    r2=Rol("Desarrollador","permite el acceso al modulo de desarrollo","all project")
+    db.session.add(r2)
     db.session.commit()
-    r=Rol("Desarrollador", "Permite el acceso al Modulo de Desarrollo")
-    db.session.add(r)
+    r3=Rol("LiderDeProyecto","permite el acceso al modulo de gestion","all project")
+    db.session.add(r3)
     db.session.commit()
-    
-    
-    
    
 @manager.command
 def createPermiso():
-    """Crear Permisos Predefinidos """ 
-    from pruebita import Permiso
+    """
+    Crea Permisos Predefinidos a nivel de:
+    - sistema
+    - proyecto
+    - fase
+    - item
+    """
+    from models import Permiso
     # Los permisos a Nivel de Sistema son
     p=Permiso("CrearProyecto","Permite crear un proyecto en el sistema")
     db.session.add(p)
@@ -89,8 +134,6 @@ def createPermiso():
     p=Permiso("ConsultaItem","Permite consulta de item en un proyecto")
     db.session.add(p)
     db.session.commit()
-    
-    
     
 @manager.command
 def dropdb():

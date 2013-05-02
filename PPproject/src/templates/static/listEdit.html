@@ -5,20 +5,64 @@
 {% block body %}
     <div class="page-header">
     <h3>Usuarios</h3>
-</div>
+    </div>
 
-<ul class="users">
-{% for user in list %}
-    <li class="span3">
-        <div class="well well-small user">
-            <div class="text">
-                <a href="{{ url_for('showUser', nombre = user.name )}}"<h5>{{ user.name }}</h5></a>
-            </div> 
-        </div>
-    </li>
-{% endfor %}
+<style type="text/css">
+table.sample {
+        width: 90%;
+	border-width: 1px;
+	border-spacing: 0px;
+	border-style: dotted;
+	border-color: #3F9BB4;
+	border-collapse: separate;
+	background-color: white;
+}
+table.sample th {
+        border-width: 0px;
+	padding: 0px;
+	border-style: none;
+	border-color: gray;
+	background-color: #85ACAC;
+        font-size: 13px;
+        color: #FFFFFF;
+	-moz-border-radius:;
+}
+table.sample td {
+        border-width: 0px;
+	padding: 0%;
+	border-style: none;
+	border-color: white;
+	background-color: white; 
+        text-align: center;
+        font-size: 13px;
+	-moz-border-radius:;
+}
+</style>
+
+<table class="sample">
+<tr>
+<ul>
+        <th id="t0"></th>
+        <th id="t1">Nick</th>
+        <th id="t2">Nombre</th>
+        <th id="t3">Apellido</th>
+        <th id="t4">Estado</th>
+<tr>
+    {% for user in list %}
+    <tr>
+       <td headers="T0" ><a href="{{ url_for('showUser', nombre = user.name )}}"</a><IMG src ="/img/icon2.png"></td>
+       <td headers="t1" ><a href="{{ url_for('showUser', nombre = user.name )}}"</a><h5>{{user.name}}</h5></td>
+       <td headers="t2" ><a href="{{ url_for('showUser', nombre = user.name )}}"</a><h5>{{user.nombre}}</h5></td>
+       <td headers="t3" ><a href="{{ url_for('showUser', nombre = user.name )}}"</a><h5>{{user.apellido}}</h5></td>
+       <td headers="t4" ><a href="{{ url_for('showUser', nombre = user.name )}}"</a><h5>{{user.estado}}</h5></td>
+    </tr>
+    {% endfor %}
+    <table>
+        
     <p><input type="button" value="Crear Usuario" onclick="document.location='addUser';"><p>
-</ul>
+</ul>   
+</tr>
+</table>
 
 
 {% endblock %}
