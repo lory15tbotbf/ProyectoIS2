@@ -157,13 +157,13 @@ def addUser():
 
 @app.route('/deleteUser/<path:nombre>.html')
 def deleteUser(nombre):
-        """ Elimina un usuario """
-        from models import User
-        user = User.query.filter(User.name == nombre).first_or_404()
-        db.session.delete(user)
-        db.session.commit()
-        flash('Se ha borrado correctamente')
-        return redirect(url_for('listEdit'))
+    """ Elimina un usuario """
+    from models import User
+    user = User.query.filter(User.name == nombre).first_or_404()
+    db.session.delete(user)
+    db.session.commit()
+    flash('Se ha borrado correctamente')
+    return redirect(url_for('listEdit'))
                              
 
 @app.route('/edit/<path:nombre>.html', methods=['GET','POST'])
@@ -377,7 +377,7 @@ def showProject(nombre):
     else:
         project = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
         form = CreateFormProject(request.form, nombre = project.nombre,
-               descripcion = project.descripcion,fechaDeInicio = project.fechaDeInicio, fechaDeFin = project.fechaDeFin)
+               descripcion = project.descripcion)
         if request.method == 'POST':
             if request.form.get('edit', None) == "Modificar Proyecto":
                 return redirect(url_for('editProject', nombre = project.nombre))
@@ -399,14 +399,10 @@ def editProject(nombre):
     else:
         project = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
         form = CreateFormProject(request.form, nombre = project.nombre,
-               descripcion = project.descripcion,fechaDeInicio = project.fechaDeInicio, fechaDeFin = project.fechaDeFin)
+               descripcion = project.descripcion)
 	if request.method == 'POST' and form.validate:
             project.nombre = request.form['nombre'] 
             project.descripcion = request.form['descripcion']
-            date = datetime.strptime(request.form['fechaDeInicio'], '%Y-%m-%d %I:%M:%S')
-            project.fechaDeInicio = date
-            date = datetime.strptime(request.form['fechaDeFin'], '%Y-%m-%d %I:%M:%S')
-            project.fechaDeFin = date
             db.session.commit()
             flash('Se ha modificado correctamente el proyecto')
             return redirect(url_for('listEditProject'))
@@ -435,7 +431,7 @@ def addProject():
         return redirect(url_for('login'))
     else:
         if request.method == 'POST':
-            project = Proyecto(nombre = request.form['nombre'], descripcion = request.form['descripcion'],fechaDeInicio = request.form['fechaDeInicio'], fechaDeFin = request.form['fechaDeFin'])    
+            project = Proyecto(nombre = request.form['nombre'], descripcion = request.form['descripcion'])    
             db.session.add(project)
             db.session.commit()
             flash('Se ha creado correctamente el proyecto')

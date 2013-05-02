@@ -15,6 +15,8 @@ def initdb():
     createUser()
     createPermiso()
     createRol()
+    createProject()
+    createTipoDeAtrib()
 
 
 @manager.command
@@ -133,6 +135,45 @@ def createPermiso():
     db.session.commit()
     p=Permiso("ConsultaItem","Permite consulta de item en un proyecto")
     db.session.add(p)
+    db.session.commit()
+ 
+@manager.command
+def createProject():
+    """ crea proyectos por default """
+    from models import Proyecto
+    p=Proyecto("proyecto1","sistema para una veterinaria")
+    db.session.add(p)
+    db.session.commit()
+    p=Proyecto("proyecto2","sistema para una guarderia")
+    db.session.add(p)
+    db.session.commit()
+    p=Proyecto("proyecto3","sistema para un consultorio")
+    db.session.add(p)
+    db.session.commit()
+    p=Proyecto("proyecto4","sistema para un supermercado")
+    db.session.add(p)
+    db.session.commit()
+    p=Proyecto("proyecto5","sistema para un banco")
+    db.session.add(p)
+    db.session.commit()
+    
+@manager.command
+def createTipoDeAtrib():
+    from models import TipoDeAtributo
+    t=TipoDeAtributo("numerico20", "numerico", 20,"atributo numerico con presicion 20")
+    db.session.add(t)
+    db.session.commit()
+    t=TipoDeAtributo("texto45", "texto", 45,"atributo texto con 45 caracteres")
+    db.session.add(t)
+    db.session.commit()
+    t=TipoDeAtributo("date", "fecha", 0,"atributo fecha")
+    db.session.add(t)
+    db.session.commit()
+    t=TipoDeAtributo("booleano", "boolean", 0,"atributo boleano")
+    db.session.add(t)
+    db.session.commit()
+    t=TipoDeAtributo("numerico45", "numerico", 45,"atributo numerico con presicion 45")
+    db.session.add(t)
     db.session.commit()
     
 @manager.command

@@ -59,8 +59,8 @@ class CreateFormProject(Form):
     """ Formulario para crear proyecto"""
     nombre = TextField('Nombre', [validators.Length(min=1, max=45)])
     descripcion = TextField('Descripcion', [ validators.Length(min=1, max=150)])
-    fechaDeInicio = DateTimeField('FechaDeInicio',[validators.Length(min=1, max=45)])
-    fechaDeFin = DateTimeField('FechaDeFin', [validators.Length(min=1, max=45)])
+    #fechaDeInicio = DateTimeField('FechaDeInicio',[validators.Length(min=1, max=45)])
+    #fechaDeFin = DateTimeField('FechaDeFin', [validators.Length(min=1, max=45)])
  
 # Administrar tipo de atributos
 
@@ -82,5 +82,3 @@ class ShowFormAtrib(Form):
     detalle = IntegerField('Detalle', [validators.required()])
     descripcion = TextField('Descripcion', [validators.required(),validators.Length(min=1, max=150)])
 
-#class SearchForm(Form):
- #   search = TextField('search', validators = [Required()])

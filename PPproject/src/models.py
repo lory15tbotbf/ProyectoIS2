@@ -7,7 +7,8 @@ from pruebita import db, app
 # MODELS
 #------------------------------------------------------------------------------#
 
-UserXRol = db.Table('UserXRol', \
+# UserXRol
+roles = db.Table('roles', \
     db.Column('idUser',db.Integer, db.ForeignKey('User.idUser')),
     db.Column('idRol',db.Integer, db.ForeignKey('Rol.idRol'))
 )
@@ -28,8 +29,9 @@ class User(db.Model):
     estado = db.Column(db.String(20), default ='Inactivo', nullable=False)
     
     # many to many: Relaciona User x Rol
-    roles = db.relationship('Rol', secondary = UserXRol, backref = db.backref('users' , lazy='dynamic'))
-    
+    roles = db.relationship('Rol', secondary = roles, 
+        backref = db.backref('users' , lazy='dynamic'))
+        
     def __init__(self,name=None, passwd=None, nombre=None, apellido=None, email=None, telefono=None, obs=None):
         """ constructor de user """
         self.name = name
@@ -43,7 +45,8 @@ class User(db.Model):
     def __repr__(self):
         return self.name
 
-RolXPermiso = db.Table('RolXPermiso', \
+# RolXPermiso
+permisos = db.Table('permisos', \
     db.Column('idRol',db.Integer, db.ForeignKey('Rol.idRol')),
     db.Column('idPermiso',db.Integer, db.ForeignKey('Permiso.idPermiso'))
     )
@@ -58,8 +61,9 @@ class Rol(db.Model):
     descripcion = db.Column(db.String(150))
     
     # many to many: Relaciona Rol x Permiso
-    permisos = db.relationship('Permiso', secondary = RolXPermiso, backref= db.backref('roles' , lazy='dynamic'))
-
+    permisos = db.relationship('Permiso', secondary = permisos,
+        backref= db.backref('roles' , lazy='dynamic'))
+        
     def __init__(self, nombre=None, descripcion=None):
         """ constructor de Rol """
         self.nombre = nombre
@@ -89,8 +93,8 @@ class Permiso(db.Model):
         self.descripcion = descripcion
 
     
-
-ProyectoXUser = db.Table('ProyectoXUser', \
+#ProyectoXUser
+users = db.Table('users', \
     db.Column('idProyecto',db.Integer, db.ForeignKey('Proyecto.idProyecto')),
     db.Column('idUser',db.Integer, db.ForeignKey('User.idUser'))
     )
@@ -109,7 +113,8 @@ class Proyecto(db.Model):
     listafases = db.relationship('Fase', backref= 'proyecto', lazy = 'dynamic')
     
     # many to many: Relaciona Proyecto x User
-    users = db.relationship('User', secondary = ProyectoXUser, backref = db.backref('proyectos' , lazy='dynamic'))
+    users = db.relationship('User', secondary = users,
+        backref = db.backref('proyectos' , lazy='dynamic'))
     
     def __init__(self, nombre=None, descripcion=None):
         """ constructor de Proyecto """
