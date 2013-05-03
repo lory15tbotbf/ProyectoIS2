@@ -21,3 +21,13 @@ class MgrProject():
         project.nombre = nombreNew
         project.descripcion = descripcionNew
         db.session.commit()
+    
+    def listar(self):
+        """ listar proyectos """
+        from models import Proyecto
+        return Proyecto.query.all()
+
+    def filtrar(self, nombre):
+        """ filtrar proyecto por nombre """
+        from models import Proyecto
+        return Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
