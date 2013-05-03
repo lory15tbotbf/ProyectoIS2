@@ -371,13 +371,13 @@ def listEditProject():
 def showProject(nombre):
     """  Muestra un formulario no editable del proyecto con las opciones de modificar, eliminar proyecto """
     from models import Proyecto
-    from form import CreateFormProject
+    from form import ShowFormProject
     if g.user is None:
         return redirect(url_for('login'))
     else:
         project = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
-        form = CreateFormProject(request.form, nombre = project.nombre,
-               descripcion = project.descripcion)
+        form = ShowFormProject(request.form, nombre = project.nombre,
+               descripcion = project.descripcion, fechaDeCreacion= project.fechaDeCreacion)
         if request.method == 'POST':
             if request.form.get('edit', None) == "Modificar Proyecto":
                 return redirect(url_for('editProject', nombre = project.nombre))
@@ -394,6 +394,7 @@ def editProject(nombre):
     """ Muestra el formulario editable del proyecto """
     from models import Proyecto
     from form import CreateFormProject
+    from ctrl.mgrProject import MgrProject
     if g.user is None:
         return redirect(url_for('login'))
     else:
@@ -401,12 +402,10 @@ def editProject(nombre):
         form = CreateFormProject(request.form, nombre = project.nombre,
                descripcion = project.descripcion)
 	if request.method == 'POST' and form.validate:
-            project.nombre = request.form['nombre'] 
-            project.descripcion = request.form['descripcion']
-            db.session.commit()
+            MgrProject().modificar(nombre, request.form['nombre'],request.form['descripcion'])
             flash('Se ha modificado correctamente el proyecto')
             return redirect(url_for('listEditProject'))
-    return render_template(app.config['DEFAULT_TPL']+'/editProject.html',
+    return render_template(app.config['DEFAULT_TPL']+'/formProject.html',
 			       conf = app.config,
 			       form = form)
 
@@ -416,9 +415,12 @@ def deleteProject(nombre):
     """ Elimina un proyecto """
     from models import Proyecto
     from ctrl.mgrProject import MgrProject
-    MgrProject().borrar(nombre)
-    flash('Se ha borrado correctamente')
-    return redirect(url_for('listEditProject'))
+    if g.user is None:
+        return redirect(url_for('login'))   
+    else:
+        MgrProject().borrar(nombre)
+        flash('Se ha borrado correctamente')
+        return redirect(url_for('listEditProject'))
                              
 
 @app.route('/addProject', methods=['GET','POST'])
@@ -431,13 +433,112 @@ def addProject():
         return redirect(url_for('login'))
     else:
         if request.method == 'POST':
-            project = Proyecto(nombre = request.form['nombre'], descripcion = request.form['descripcion'])    
-            MgrProject().guardar(project)
-            flash('Se ha creado correctamente el proyecto')
-            return redirect(url_for('listEditProject'))
+            form = CreateFormProject(request.form, request.form['nombre'], descripcion = request.form['descripcion'])
+            if form.validate():
+                project = Proyecto(nombre = request.form['nombre'], descripcion = request.form['descripcion'])    
+                MgrProject().guardar(project)
+                flash('Se ha creado correctamente el proyecto')
+                return redirect(url_for('listEditProject'))
+            else:
+                return render_template(app.config['DEFAULT_TPL']+'/formProject.html',
+                            conf = app.config,
+                            form = form)
+                
     return render_template(app.config['DEFAULT_TPL']+'/formProject.html',
+                conf = app.config,
+                form = CreateFormProject())
+
+
+
+# ADMINISTRAR FASE
+
+@app.route('/listEditFase')
+def listEditFase():
+    """ Lista editable de fase que se alojan en la base de datos"""
+    from models import Fase
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        return render_template(app.config['DEFAULT_TPL']+'/listEditFase.html',
+                           conf = app.config,
+                           list = Fase.query.all(),) 
+
+
+@app.route('/showFase/<path:nombre>.html', methods=['GET','POST'])
+def showFase(nombre):
+    """  Muestra un formulario no editable de la fase con las opciones de modificar, eliminar fase """
+    from models import Fase
+    from form import ShowFormFase
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        fase = Fase.query.filter(Fase.nombre == nombre).first_or_404()
+        form = ShowFormFase(request.form, nombre = fase.nombre,
+               descripcion = fase.descripcion, orden = fase.orden)
+        if request.method == 'POST':
+            if request.form.get('edit', None) == "Modificar Fase":
+                return redirect(url_for('editFase', nombre = fase.nombre))
+            elif request.form.get('delete', None) == "Eliminar Fase":
+                return redirect(url_for('deleteFase', nombre = fase.nombre))
+            
+	return render_template(app.config['DEFAULT_TPL']+'/showFase.html',
 			       conf = app.config,
-			       form = CreateFormProject())
+			       form = form)
+
+
+@app.route('/editFase/<path:nombre>.html', methods=['GET','POST'])
+def editFase(nombre):
+    """ Muestra el formulario editable de la fase """
+    from models import Fase
+    from form import CreateFormFase
+    from ctrl.mgrFase import MgrFase
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        fase = Fase.query.filter(Fase.nombre == nombre).first_or_404()
+        form = CreateFormFase(request.form, nombre = fase.nombre,
+               descripcion = fase.descripcion, orden = fase.orden)
+	if request.method == 'POST' and form.validate:
+            MgrFase().modificar(nombre, request.form['nombre'],request.form['descripcion'], request.form['orden'] )
+            flash('Se ha modificado correctamente el fase')
+            return redirect(url_for('listEditFase'))
+    return render_template(app.config['DEFAULT_TPL']+'/editFase.html',
+			       conf = app.config,
+			       form = form)
+
+
+@app.route('/deleteFase/<path:nombre>.html')
+def deleteFase(nombre):
+    """ Elimina un fase """
+    from models import Fase
+    from ctrl.mgrFase import MgrFase
+    if g.user is None:
+        return redirect(url_for('login'))   
+    else:
+        MgrFase().borrar(nombre)
+        flash('Se ha borrado correctamente')
+        return redirect(url_for('listEditFase'))
+
+
+@app.route('/addFase', methods=['GET','POST'])
+def addFase():
+    """ Agrega una fase """
+    from models import Fase
+    from form import CreateFormFase
+    from ctrl.mgrFase import MgrFase
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        if request.method == 'POST':
+            form = CreateFormFase(request.form, request.form['nombre'], descripcion = request.form['descripcion'], orden = request.form['orden'])
+            if form.validate():
+                fase = Fase(nombre = request.form['nombre'], descripcion = request.form['descripcion'], orden = request.form['orden'])    
+                MgrFase().guardar(fase)
+                flash('Se ha creado correctamente la fase')
+                return redirect(url_for('listEditFase'))
+    return render_template(app.config['DEFAULT_TPL']+'/formFase.html',
+			       conf = app.config,
+			       form = CreateFormFase())
 
 
 # ADMINISTRAR TIPO DE ATRIBUTO
