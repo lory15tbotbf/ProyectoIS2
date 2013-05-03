@@ -7,19 +7,40 @@
     <h3>Lista de Proyecto</h3>
     </div>
 
+
 <ul class="proyectos">
-{% for proyecto in list %}
-    <li class="span3">
-        <div class="well well-small user">
-            <div class="text">
-                <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}"<h5>{{ proyecto.nombre }}</h5></a>
-            </div> 
-        </div>
-    </li>
-{% endfor %}
     <p>
-       <input type="button" value="Crear Proyecto" onclick="document.location='addProject';">
-     </p>
+        <input type="text" name="filtro"/>
+	<input type="submit" name="opcion" value="Filtro" />
+
+    </p>
+    	<div style="height:150px;width:700px;overflow:scroll;">	
+	<table width="100%" border="1">
+	<tr>
+        <th scope="col">OK</th>
+	<th scope="col">Nombre</th>
+	<th scope="col">Descripcion</th>
+	<th scope="col">FechaDeCreacion</th>
+	<th scope="col">Estado</th>
+	</tr>
+
+        {% for proyecto in list%}
+	<tr>
+        <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" </a><IMG src ="/img/txt.png"></td>
+        <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.nombre }}</h5></td>
+        <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.descripcion }}</h5></td>
+        <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.fechaDeCreacion}}</h5></td>
+        <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.estado}}</h5></td>	
+       
+	</tr>  	
+	{% endfor %}
+	</table>
+	</div>	
+
+    <br />
+    <p>
+        <input type="button" value="Crear Proyecto" onclick="document.location='addProject';">
+    </p>
 </ul>
 
 

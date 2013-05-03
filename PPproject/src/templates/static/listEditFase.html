@@ -3,24 +3,25 @@
 {% block title %}List Fase{% endblock %}
 
 {% block body %}
-    <div class="page-header">
-    <h3>Lista de Fase</h3>
-    </div>
-
-<ul class="proyectos">
-{% for fase in list %}
-    <li class="span3">
-        <div class="well well-small user">
-            <div class="text">
-                <a href="{{ url_for('showFase', nombre = fase.nombre )}}"<h5>{{ fase.nombre }}</h5></a>
-            </div> 
+        <div class="page-header">
+        <h3>Lista de Fase</h3>
         </div>
-    </li>
-{% endfor %}
-    <p>
-       <input type="button" value="Crear Fase" onclick="document.location='addFase';">
-     </p>
-</ul>
+
+    <ul class="proyectos">
+        {% for fase in list %}
+            <li class="span3">
+                <div class="well well-small user">
+                    <div class="text">
+                        <a href="{{ url_for('showFase', nombre = fase.nombre )}}"<h5>{{ fase.nombre }}</h5></a>
+                    </div> 
+                </div>
+            </li>
+        {% endfor %}
+        <br />
+         <p>
+           <input type="button" value="Crear Fase" onclick="document.location='addFase';">
+         </p>
+    </ul>
 
 
 {% endblock %}
