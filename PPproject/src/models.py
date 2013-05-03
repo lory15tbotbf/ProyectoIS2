@@ -152,7 +152,7 @@ class Fase(db.Model):
     nombre = db.Column(db.String(45), unique=True, nullable=False)
     descripcion = db.Column(db.String(150))
     estado = db.Column(db.String(20), default ='Pendiente', nullable=False)
-    orden = db.Column(db.Integer, unique=True, nullable=False)
+    orden = db.Column(db.Integer, nullable=False)
     fechaDeCreacion = db.Column(db.DateTime, default = datetime.now(), nullable=False) 
     
     # one to many: Relaciona Proyecto x Fase
