@@ -1,27 +1,49 @@
 {% extends "static/layout.html" %}
 
-{% block title %}List Fase{% endblock %}
+{% block title %}List Project{% endblock %}
 
 {% block body %}
-        <div class="page-header">
-        <h3>Lista de Fase</h3>
-        </div>
+    <div class="page-header">
+        <center><h3>Filtro</h3></center>
+    </div>
+    <br />
 
+    <div class="page-header">
+        <center><h3>Lista de Proyecto</h3></center>
+    </div>
+    <br />
     <ul class="proyectos">
-        {% for fase in list %}
-            <li class="span3">
-                <div class="well well-small user">
-                    <div class="text">
-                        <a href="{{ url_for('showFase', nombre = fase.nombre )}}"<h5>{{ fase.nombre }}</h5></a>
-                    </div> 
-                </div>
-            </li>
-        {% endfor %}
-        <br />
-         <p>
-           <input type="button" value="Crear Fase" onclick="document.location='addFase';">
-         </p>
+        <div style="height:150px;width:700px;overflow:scroll;">	
+            <table width="100%" border="1">
+            <tr>
+            <th scope="col">Reg</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">FechaDeCreacion</th>
+            <th scope="col">Orden</th>
+            <th scope="col">Estado</th>
+            </tr>
+
+            {% for fase in list %}
+            <tr>
+                <td> <a href="{{ url_for('showFase', nombre = fase.nombre )}}" </a><IMG src ="/img/txt.png"></td>
+                <td> <a href="{{ url_for('showFase', nombre = fase.nombre )}}" <h5>{{ fase.nombre }}</h5></td>
+                <td> <a href="{{ url_for('showFase', nombre = fase.nombre )}}" <h5>{{ fase.descripcion }}</h5></td>
+                <td> <a href="{{ url_for('showFase', nombre = fase.nombre )}}" <h5>{{ fase.fechaDeCreacion}}</h5></td>
+                <td> <a href="{{ url_for('showFase', nombre = fase.nombre )}}" <h5>{{ fase.orden}}</h5></td>	
+                <td> <a href="{{ url_for('showFase', nombre = fase.nombre )}}" <h5>{{ fase.estado}}</h5></td>	
+
+            </tr>  	
+            {% endfor %}
+            </table>
+          </div>	
+
+            <br />
     </ul>
+    <br />
+    <p>
+        <input type="button" value="Crear Proyecto" onclick="document.location='addProject';">
+    </p>
 
+ {% endblock %}
 
-{% endblock %}

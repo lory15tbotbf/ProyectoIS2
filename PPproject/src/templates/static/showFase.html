@@ -15,13 +15,19 @@
             {{form.descripcion(class="form-input", style="height:50px;width:200px", readonly="readonly") }}
             {% for error in form.descripcion.errors %} {{ error }} {% endfor %}
             <br />
+            {{ form.fechaDeCreacion.label(style="float: left; width: 100px;") }}
+            {{form.fechaDeCreacion(class="form-input", style="width:200px", readonly="readonly") }}
+            {% for error in form.fechaDeCreacion.errors %} {{ error }} {% endfor %}
             <br />
             {{ form.orden.label(style="float: left; width: 100px;") }}
             {{form.orden(class="form-input", style="width:200px", readonly="readonly") }}
             {% for error in form.orden.errors %} {{ error }} {% endfor %}
+             <br />
+            {{ form.estado.label(style="float: left; width: 100px;") }}
+            {{form.estado(class="form-input", style="width:200px", readonly="readonly") }}
+            {% for error in form.estado.errors %} {{ error }} {% endfor %}
             <br />
-     
-            
+    
             <script language="JavaScript">
                 function confirmar ( mensaje ) {
                     return confirm( mensaje );
