@@ -23,3 +23,11 @@ class MgrFase():
         fase.orden = ordenNew
         db.session.commit()
 
+    def listar(self):
+        from models import Fase
+        return Fase.query.all()
+    
+    def filtrar(self, nombre):
+        """ filtrar fase por nombre """
+        from models import Fase
+        return Fase.query.filter(Fase.nombre == nombre).first_or_404()
