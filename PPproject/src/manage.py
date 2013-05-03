@@ -5,8 +5,11 @@ from pruebita import app, db
 import models
 
 manager = Manager(app)
+"""
+Clase que contiene los metodos relacionados con la inicializacion de la base de datos 
+@param manager Inicializa el modulo 
+"""
 
-""" Administra la Base de Datos """
 @manager.command
 def initdb():
     """ Inicializar base de datos """
@@ -21,7 +24,7 @@ def initdb():
  
 @manager.command
 def createUser():
-    """ crea usuarios """ 
+    """ Crea usuarios """ 
     from models import User
     from ctrl.mgrUser import MgrUser
     u = User("admin","admin","administrador","administrador","admin@gmail.com",1234,"usuario administrador")
@@ -117,7 +120,7 @@ def createPermiso():
  
 @manager.command
 def createProject():
-    """ crea proyectos por default """
+    """ Crea proyectos por default """
     from models import Proyecto
     from ctrl.mgrProject import MgrProject
     p=Proyecto("proyecto1","sistema para una veterinaria")
@@ -155,6 +158,7 @@ def createFase():
 
 @manager.command
 def createTipoDeAtrib():
+    """ Crea tipo de Atibutos por default """
     from models import TipoDeAtributo
     from ctrl.mgrTipoDeAtrib import MgrTipoDeAtrib
     t=TipoDeAtributo("numerico20", "numerico", 20,"atributo numerico con presicion 20")
