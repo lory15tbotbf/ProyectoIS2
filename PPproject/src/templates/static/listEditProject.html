@@ -4,15 +4,16 @@
 
 {% block body %}
     <div class="page-header">
-        <center>
-              <h3>Lista de Proyecto</h3>
-        </center>
-  
+        <center><h3>Filtro</h3></center>
     </div>
+    <br />
 
-
+    <div class="page-header">
+        <center><h3>Lista de Proyecto</h3></center>
+    </div>
+    <br />
     <ul class="proyectos">
-            <div style="height:150px;width:700px;">	
+            <div style="height:150px;width:700px;overflow:scroll;">	
             <table width="100%" border="1">
             <tr>
             <th scope="col">Reg</th>
@@ -20,6 +21,7 @@
             <th scope="col">Descripcion</th>
             <th scope="col">FechaDeCreacion</th>
             <th scope="col">Estado</th>
+            <th scope="col">Orden</th>
             </tr>
 
             {% for proyecto in list%}
@@ -29,17 +31,17 @@
             <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.descripcion }}</h5></td>
             <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.fechaDeCreacion}}</h5></td>
             <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.estado}}</h5></td>	
-
+            <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.orden}}</h5></td>	
             </tr>  	
             {% endfor %}
             </table>
             </div>	
 
             <br />
-            <p>
-                <input type="button" value="Crear Proyecto" onclick="document.location='addProject';">
-            </p>
     </ul>
+    <br />
+    <p>
+        <input type="button" value="Crear Proyecto" onclick="document.location='addProject';">
+    </p>
 
-
-    {% endblock %}
+ {% endblock %}
