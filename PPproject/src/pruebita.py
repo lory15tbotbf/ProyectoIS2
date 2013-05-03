@@ -114,6 +114,7 @@ def desarrollo():
 			    conf = app.config,)
 # ADMINISTRAR USUARIO
 
+
 @app.route('/addUser', methods=['GET','POST'])
 def addUser():
     """Controlador para crear usuario"""
@@ -258,6 +259,7 @@ def showUser(nombre):
 
 # ADMINISTRAR ROL
 
+
 @app.route('/listRolPermiso', methods=['GET','POST'])
 def listRolPermiso():
     from models import Rol
@@ -355,6 +357,7 @@ def deleteRol(nombre):
 
 # ADMINISTRAR PROYECTO
 
+
 @app.route('/listEditProject')
 def listEditProject():
     """ Lista editable de proyectos que se alojan en la base de datos"""
@@ -377,7 +380,9 @@ def showProject(nombre):
     else:
         project = MgrProject().filtrar(nombre)
         form = ShowFormProject(request.form, nombre = project.nombre,
-               descripcion = project.descripcion, fechaDeCreacion= project.fechaDeCreacion)
+               descripcion = project.descripcion, 
+               fechaDeCreacion = project.fechaDeCreacion,
+               estado = project.estado)
         if request.method == 'POST':
             if request.form.get('edit', None) == "Modificar Proyecto":
                 return redirect(url_for('editProject', nombre = project.nombre))
@@ -431,9 +436,12 @@ def addProject():
         return redirect(url_for('login'))
     else:
         if request.method == 'POST':
-            form = CreateFormProject(request.form, request.form['nombre'], descripcion = request.form['descripcion'])
+            form = CreateFormProject(request.form, 
+                                     request.form['nombre'], 
+                                     descripcion = request.form['descripcion'])
             if form.validate():
-                project = Proyecto(nombre = request.form['nombre'], descripcion = request.form['descripcion'])    
+                project = Proyecto(nombre = request.form['nombre'], 
+                                   descripcion = request.form['descripcion'])    
                 MgrProject().guardar(project)
                 flash('Se ha creado correctamente el proyecto')
                 return redirect(url_for('listEditProject'))
@@ -450,6 +458,7 @@ def addProject():
 
 # ADMINISTRAR FASE
 
+
 @app.route('/listEditFase')
 def listEditFase():
     """ Lista editable de fase que se alojan en la base de datos"""
@@ -461,7 +470,6 @@ def listEditFase():
                            conf = app.config,
                            list = MgrFase().listar(),) 
 
-
 @app.route('/showFase/<path:nombre>.html', methods=['GET','POST'])
 def showFase(nombre):
     """  Muestra un formulario no editable de la fase con las opciones de modificar, eliminar fase """
@@ -472,7 +480,10 @@ def showFase(nombre):
     else:
         fase = MgrFase().filtrar(nombre)
         form = ShowFormFase(request.form, nombre = fase.nombre,
-               descripcion = fase.descripcion, orden = fase.orden)
+               descripcion = fase.descripcion, 
+               fechaDeCreacion = fase.fechaDeCreacion,
+               orden = fase.orden,
+               estado = fase.estado)
         if request.method == 'POST':
             if request.form.get('edit', None) == "Modificar Fase":
                 return redirect(url_for('editFase', nombre = fase.nombre))
@@ -496,10 +507,13 @@ def editFase(nombre):
         form = CreateFormFase(request.form, nombre = fase.nombre,
                descripcion = fase.descripcion, orden = fase.orden)
 	if request.method == 'POST' and form.validate:
-            MgrFase().modificar(nombre, request.form['nombre'],request.form['descripcion'], request.form['orden'] )
+            fase.nombre = request.form['nombre']
+            fase.descripcion = request.form['descripcion']
+            fase.orden =  request.form['orden'] 
+            MgrFase().modificar(nombre, fase.nombre , fase.descripcion, fase.orden)
             flash('Se ha modificado correctamente el fase')
             return redirect(url_for('listEditFase'))
-    return render_template(app.config['DEFAULT_TPL']+'/editFase.html',
+    return render_template(app.config['DEFAULT_TPL']+'/formFase.html',
 			       conf = app.config,
 			       form = form)
 
@@ -532,12 +546,17 @@ def addFase():
                 MgrFase().guardar(fase)
                 flash('Se ha creado correctamente la fase')
                 return redirect(url_for('listEditFase'))
+            else:
+                return render_template(app.config['DEFAULT_TPL']+'/formFase.html',
+                            conf = app.config,
+                            form = form)
     return render_template(app.config['DEFAULT_TPL']+'/formFase.html',
-			       conf = app.config,
-			       form = CreateFormFase())
+                conf = app.config,
+                form = CreateFormFase())
 
 
 # ADMINISTRAR TIPO DE ATRIBUTO
+
 
 @app.route('/listAtrib')
 def listAtrib():
@@ -632,6 +651,7 @@ def deleteAtrib(nombre):
 #------------------------------------------------------------------------------#
 # MAIN
 #------------------------------------------------------------------------------#
+
 
 
 if __name__ == '__main__':
