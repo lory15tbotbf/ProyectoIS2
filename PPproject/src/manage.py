@@ -16,6 +16,7 @@ def initdb():
     createRol()
     createProject()
     createTipoDeAtrib()
+    createFase()
 
  
 @manager.command
@@ -130,7 +131,28 @@ def createProject():
     p=Proyecto("proyecto5","sistema para un banco")
     MgrProject().guardar(p)
     #MgrProject().borrar("proyecto5")
-    
+    #MgrProject().modificar("proyecto5","proyecto5","sistema para un banco2","Pendiente")
+
+@manager.command
+def createFase():
+    """ crea proyectos por default """
+    from models import Fase
+    from ctrl.mgrFase import MgrFase
+    f=Fase("fase1-proyecto1","fase inicial",1)
+    MgrFase().guardar(f)
+    f=Fase("fase2-proyecto1","fase",2)
+    MgrFase().guardar(f)
+    f=Fase("fase1-proyecto2","fase inicial",1)
+    MgrFase().guardar(f)
+    f=Fase("fase2-proyecto2","fase",2)
+    MgrFase().guardar(f)
+    f=Fase("fase1-proyecto3","fase inicial",1)
+    MgrFase().guardar(f)
+    f=Fase("fase2-proyecto3","fase",2)
+    MgrFase().guardar(f)
+    #MgrFase().borrar("fase2-proyecto3")
+    #MgrFase().modificar("fase1-proyecto3", "fase1-proyecto3","inicio",1)
+
 @manager.command
 def createTipoDeAtrib():
     from models import TipoDeAtributo
