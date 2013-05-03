@@ -8,29 +8,30 @@
     <br />
         <center><h3>Lista de Proyecto</h3></center>
     <br />
-    <ul class="proyectos">
-            <div style="height:150px;width:700px;overflow:scroll;">	
-            <table width="100%" border="1">
+    <ul>
+           <div>
+            <table class="sample" id ="fase">
             <tr>
-            <th scope="col">Reg</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Descripcion</th>
-            <th scope="col">FechaDeCreacion</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Orden</th>
+            <th id="t0">Reg</th>
+            <th id="t1">Nombre</th>
+            <th id="t2">Descripcion</th>
+            <th id="t3">FechaDeCreacion</th>
+            <th id="t4">Estado</th>
             </tr>
 
             {% for proyecto in list%}
             <tr>
-            <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" </a><IMG src ="/img/txt.png"></td>
-            <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.nombre }}</h5></td>
-            <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.descripcion }}</h5></td>
-            <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.fechaDeCreacion}}</h5></td>
-            <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.estado}}</h5></td>	
-            <td> <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.orden}}</h5></td>	
-            </tr>  	
+            <td headers="t0" > <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" </a><IMG src ="/img/icon2.png"></td>
+            <td headers="t1" > <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.nombre }}</h5></td>
+            <td headers="t2" > <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.descripcion }}</h5></td>
+            <td headers="t3" > <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.fechaDeCreacion}}</h5></td>
+            <td headers="t4" > <a href="{{ url_for('showProject', nombre = proyecto.nombre )}}" <h5>{{ proyecto.estado}}</h5></td>	
+                   </tr>  	
             {% endfor %}
             </table>
+          
+                 
+            
             </div>	
             <br />
     </ul>
