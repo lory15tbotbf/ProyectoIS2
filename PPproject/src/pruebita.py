@@ -497,7 +497,10 @@ def showFase(nombre):
 
 @app.route('/editFase/<path:nombre>.html', methods=['GET','POST'])
 def editFase(nombre):
-    """ Muestra el formulario editable de la fase """
+    """ 
+    Muestra el formulario editable de la fase 
+      @param nombre atributo de la fase
+    """
     from form import CreateFormFase
     from ctrl.mgrFase import MgrFase
     if g.user is None:
@@ -520,7 +523,10 @@ def editFase(nombre):
 
 @app.route('/deleteFase/<path:nombre>.html')
 def deleteFase(nombre):
-    """ Elimina un fase """
+    """ 
+    Elimina un fase
+    @param nombre elimina un usuario por el atributo nombre
+    """
     from ctrl.mgrFase import MgrFase
     if g.user is None:
         return redirect(url_for('login'))   
@@ -553,7 +559,6 @@ def addFase():
     return render_template(app.config['DEFAULT_TPL']+'/formFase.html',
                 conf = app.config,
                 form = CreateFormFase())
-
 
 # ADMINISTRAR TIPO DE ATRIBUTO
 
