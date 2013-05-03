@@ -59,9 +59,29 @@ class CreateFormProject(Form):
     """ Formulario para crear proyecto"""
     nombre = TextField('Nombre', [validators.Length(min=1, max=45)])
     descripcion = TextField('Descripcion', [ validators.Length(min=1, max=150)])
-    #fechaDeInicio = DateTimeField('FechaDeInicio',[validators.Length(min=1, max=45)])
-    #fechaDeFin = DateTimeField('FechaDeFin', [validators.Length(min=1, max=45)])
- 
+
+
+class ShowFormProject(Form):
+    """ Formulario para mostrar un proyecto"""
+    nombre = TextField('Nombre', [validators.Length(min=1, max=45)])
+    descripcion = TextField('Descripcion', [ validators.Length(min=1, max=150)])
+    fechaDeCreacion = DateTimeField('FechaDeInicio')
+    
+# Administrar Fase
+
+class CreateFormFase(Form):
+    """ Formulario para crear proyecto"""
+    nombre = TextField('Nombre', [validators.Length(min=1, max=45)])
+    descripcion = TextField('Descripcion', [ validators.Length(min=1, max=150)])
+    orden = IntegerField('Orden', [validators.required()])
+
+class ShowFormFase(Form):
+    """ Formulario para mostrar una fase """
+    nombre = TextField('Nombre', [validators.Length(min=1, max=45)])
+    descripcion = TextField('Descripcion', [ validators.Length(min=1, max=150)])
+    orden = IntegerField('Orden', [validators.required()])
+
+    
 # Administrar tipo de atributos
 
 class CreateFormAtrib(Form):
