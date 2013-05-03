@@ -70,7 +70,7 @@ class ShowFormProject(Form):
 # Administrar Fase
 
 class CreateFormFase(Form):
-    """ Formulario para crear proyecto"""
+    """ Formulario para crear fase"""
     nombre = TextField('Nombre', [validators.required( message=":nombre?:"), validators.Length(min=1, max=45, message=":longitud requerida [1-45]:")])
     descripcion = TextField('Descripcion', [validators.required(message=":descripcion?:"), validators.Length(min=1, max=150, message=":longitud requerida [1-150]:")])
     orden = IntegerField('Orden',  [validators.required(message=":orden?:"), validators.NumberRange(min=1, max=150, message=":orden>=1:")])
@@ -83,8 +83,7 @@ class ShowFormFase(Form):
     fechaDeCreacion = DateTimeField('FechaDeCreacion')
     orden = IntegerField('Orden',  [validators.required(message=":orden?:"), validators.NumberRange(min=1, max=150, message=":orden>=1:")])
     estado = TextField('Estado', [validators.required(message=":estado?:")])
-
-    
+  
 # Administrar tipo de atributos
 
 class CreateFormAtrib(Form):
