@@ -1,9 +1,9 @@
 {% extends "static/layout.html" %}
 
-{% block title %}Show Atrib{% endblock %}
+{% block title %}Show TipoDeItem{% endblock %}
 
 {% block body %}
-    <h1>Datos del atributo</h1>
+    <h1>Datos del tipo de item</h1>
     <form method="post" action="">  
       <dl>
         {{ form.csrf }}
@@ -11,23 +11,15 @@
             {{form.nombre(class="form-input", style="width:200px", readonly="readonly") }}
             {% for error in form.nombre.errors %} {{ error }} {% endfor %}
             <br />
-            {{ form.tipoDeDato.label(style="float: left; width: 100px;") }}
-            {{form.tipoDeDato(class="form-input", style="width:100px", readonly="readonly") }}
-            {% for error in form.tipoDeDato.errors %} {{ error }} {% endfor %}
-            <br />  
-            {{ form.detalle.label(style="float: left; width: 100px;") }}
-            {{form.detalle(class="form-input", style="width:100px", readonly="readonly")}}
-            {% for error in form.detalle.errors %} {{ error }} {% endfor %}
-            <br />
             {{ form.descripcion.label(style="float: left; width: 100px;") }}
-            {{form.descripcion(class="form-input", style="width:200px", readonly="readonly") }}
+            {{form.descripcion(class="form-input", style="width:300px", readonly="readonly") }}
             {% for error in form.descripcion.errors %} {{ error }} {% endfor %}
       </dl>
       <script language="JavaScript">
-      function confirmar ( mensaje ) {
-      return confirm( mensaje );
-      } 
-      </script>
+          function confirmar ( mensaje ) {
+              return confirm( mensaje );
+          }
+      </script> 
       
       <p><input type="submit" name="edit" value="Modificar Atributo">
          <input type="submit" name="delete" value="Eliminar Atributo" onclick="return confirmar('¿Está seguro que desea eliminar el usuario?')">

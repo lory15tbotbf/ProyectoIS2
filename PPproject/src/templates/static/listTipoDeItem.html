@@ -1,5 +1,5 @@
 {% extends "static/layout.html" %}
-{% block title %}List Atrib{% endblock %}
+{% block title %}List tipoDeItem{% endblock %}
 {% block body %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  
@@ -38,7 +38,7 @@
 </head>
 <tbody>
 <div class="page-header">
-    <h3>Tipos de Atributos</h3>
+    <h3>Tipos de Items</h3>
 </div>
 <form runat="server">
              
@@ -47,25 +47,21 @@
         <tr>
             <td class="tableHeader">
             </td>
-            <td colspan="5" class="filter">
+            <td colspan="2" class="filter">
                 Search: <input id="filterBoxTwo" value="" maxlength="30" size="30" type="text" />
                 <img id="filterClearTwo" src="/img/cross.png" title="Click to clear filter." alt="Clear Filter Image" />
             </td>
         </tr> 	
 		<tr>
 			<th><a href='#' title="Click Header to Sort">Nombre</a></th>
-			<th><a href='#' title="Click Header to Sort">Tipo de Dato</a></th>
-			<th><a href='#' title="Click Header to Sort">Detalle</a></th>
 			<th><a href='#' title="Click Header to Sort">Descripcion</a></th>
 			
 		</tr>
 </thead>
-    {% for atrib in list %}
+    {% for tipoDeItem in list %}
     <tr>
-       <td><a href="{{ url_for('showAtrib', nombre = atrib.nombre )}}"</a><h5>{{ atrib.nombre }}</h5></td>
-       <td><a href="{{ url_for('showAtrib', nombre = atrib.tipoDeDato )}}"</a><h5>{{ atrib.tipoDeDato }}</h5></td>
-       <td><a href="{{ url_for('showAtrib', nombre = atrib.detalle )}}"</a><h5>{{ atrib.detalle }}</h5></td>
-       <td><a href="{{ url_for('showAtrib', nombre = atrib.descripcion )}}"</a><h5>{{ atrib.descripcion }}</h5></td>
+       <td><a href="{{ url_for('showTipoDeItem', nombre = tipoDeItem.nombre )}}"</a><h5>{{ tipoDeItem.nombre }}</h5></td>
+       <td><a href="{{ url_for('showTipoDeItem', nombre = tipoDeItem.descripcion )}}"</a><h5>{{ tipoDeItem.descripcion }}</h5></td>
     </tr>
     {% endfor %}
 
@@ -93,7 +89,7 @@
 <script type="text/javascript" src="http://js-kit.com/polls.js"></script>
 </div>
 </form>   
- <p><input type="button" value="Crear Atributo" onclick="document.location='addAtrib';"><p>
+ <p><input type="button" value="Crear Tipo de Item" onclick="document.location='addTipoDeItem';"><p>
 
 {% endblock %}
 

@@ -4,7 +4,7 @@ import os
 DEBUG = True
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
-
+WHOOSH_BASE = os.path.join(_basedir, 'search.db')
 DATA_PATH = os.path.join(_basedir, 'data')
 DEFAULT_TPL = 'static'
 
