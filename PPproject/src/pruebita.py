@@ -559,7 +559,7 @@ def addFase():
     return render_template(app.config['DEFAULT_TPL']+'/formFase.html',
                 conf = app.config,
                 form = CreateFormFase())
-
+            
 # ADMINISTRAR TIPO DE ATRIBUTO
 
 
