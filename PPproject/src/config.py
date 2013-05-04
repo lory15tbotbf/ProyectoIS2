@@ -17,7 +17,7 @@ LANG = 'es'
 LANG_DIRECTION = 'ltr'
 YEAR = '2013'
 
-SQLALCHEMY_DATABASE_URI = 'sqlite:///'+ os.path.join(os.path.dirname(__file__), 'database.db')
+SQLALCHEMY_DATABASE_URI = 'sqlite:///'+ os.path.join(os.path.dirname(__file__), 'databasePrueba.db')
 
 del os
 
