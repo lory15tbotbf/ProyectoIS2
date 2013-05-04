@@ -14,7 +14,7 @@ class MgrProject():
         db.session.delete(project)
         db.session.commit()
     
-    def modificar(self, nombre, nombreNew, confirmacionNew, ):
+    def modificar(self, nombre, nombreNew, descripcionNew):
         """ modificar un registro project x name"""
         from models import Proyecto
         project = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
@@ -31,4 +31,3 @@ class MgrProject():
         """ filtrar proyecto por nombre """
         from models import Proyecto
         return Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
-    

@@ -1,9 +1,9 @@
 {% extends "static/layout.html" %}
 
-{% block title %}Edit Project{% endblock %}
+{% block title %}Edit Fase{% endblock %}
 
 {% block body %}
-    <h1>Show Proyecto</h1>
+    <h1>Show Fase</h1>
     <form method="post" action="">  
       <dl>
         {{ form.csrf }}
@@ -19,12 +19,15 @@
             {{form.fechaDeCreacion(class="form-input", style="width:200px", readonly="readonly") }}
             {% for error in form.fechaDeCreacion.errors %} {{ error }} {% endfor %}
             <br />
+            {{ form.orden.label(style="float: left; width: 100px;") }}
+            {{form.orden(class="form-input", style="width:200px", readonly="readonly") }}
+            {% for error in form.orden.errors %} {{ error }} {% endfor %}
+             <br />
             {{ form.estado.label(style="float: left; width: 100px;") }}
             {{form.estado(class="form-input", style="width:200px", readonly="readonly") }}
             {% for error in form.estado.errors %} {{ error }} {% endfor %}
             <br />
-  
-            
+    
             <script language="JavaScript">
                 function confirmar ( mensaje ) {
                     return confirm( mensaje );
@@ -33,8 +36,8 @@
       </dl>
       <br />
       <p>
-          <input type="submit" name="edit" value="Modificar Proyecto"  > 
-          <input type="submit" name="delete" value="Eliminar Proyecto" onclick="return confirmar('¿Está seguro que desea eliminar el registro?')">
+          <input type="submit" name="edit" value="Modificar Fase"  >
+          <input type="submit" name="delete" value="Eliminar Fase" onclick="return confirmar('¿Está seguro que desea eliminar el registro?')">
           <input type="button" value="Cancelar" onclick="javascript:history.back();">
       </p>
     </form>

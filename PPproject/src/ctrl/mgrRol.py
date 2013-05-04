@@ -33,4 +33,3 @@ class MgrRol():
         from models import Rol
         return Rol.query.filter(Rol.nombre == nombre).first_or_404()
     
-

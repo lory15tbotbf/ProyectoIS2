@@ -6,7 +6,7 @@
     <h1>Modificar datos de tipo de item</h1>
     <form method="post" action="">
       <dl>
-            {{ form.csrf }}
+         {{ form.csrf }}
             {{ form.nombre.label(style="float: left; width: 100px;") }}
             {{form.nombre(class="form-input", style="width:100px") }}
             {% for error in form.nombre.errors %} {{ error }} {% endfor %}

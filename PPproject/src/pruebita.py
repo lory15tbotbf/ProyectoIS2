@@ -549,32 +549,6 @@ def addFase():
     return render_template(app.config['DEFAULT_TPL']+'/formFase.html',
                 conf = app.config,
                 form = CreateFormFase())
-
-@app.route('/addFaseFiltro', methods=['GET','POST'])
-def addFaseFiltro():
-    """ Agrega una fase """
-    from models import Fase
-    from form import CreateFormFaseFiltro
-    from ctrl.mgrFase import MgrFase
-    if g.user is None:
-        return redirect(url_for('login'))
-    else:
-        if request.method == 'POST':
-            form = CreateFormFaseFiltro(request.form, request.form['nombre'])
-            if form.validate():
-                fase = Fase(nombre = request.form['nombre'])  
-                MgrFase().filtrar(request.form['nombre'])
-                #MgrFase().guardar(fase)
-                flash('Se ha creado correctamente la fase')
-                return redirect(url_for('listEditFase'))
-            else:
-                return render_template(app.config['DEFAULT_TPL']+'/formFase.html',
-                            conf = app.config,
-                            form = form)
-    return render_template(app.config['DEFAULT_TPL']+'/formFase.html',
-                conf = app.config,
-                form = CreateFormFaseFiltro())
-                
 # ADMINISTRAR TIPO DE ATRIBUTO
 
 
@@ -670,7 +644,7 @@ def deleteAtrib(nombre):
         flash('Se ha borrado correctamente')
         return redirect(url_for('listAtrib'))
     
-# ADMINISTRAR ITEM
+# ADMINISTRAR TIPO DE ITEM
 
 @app.route('/listTipoDeItem')
 def listTipoDeItem():
@@ -695,9 +669,9 @@ def showTipoDeItem(nombre):
         form = CreateFormTipoDeItem(request.form, nombre = tipoDeItem.nombre, 
                descripcion = tipoDeItem.descripcion)
         if request.method == 'POST':
-            if request.form.get('edit', None) == "Modificar Item":
+            if request.form.get('edit', None) == "Modificar Tipo de Item":
                 return redirect(url_for('editTipoDeItem', nombre = tipoDeItem.nombre))
-            elif request.form.get('delete', None) == "Eliminar Item":
+            elif request.form.get('delete', None) == "Eliminar Tipo de Item":
                 return redirect(url_for('deleteTipoDeItem', nombre = tipoDeItem.nombre))
 	return render_template(app.config['DEFAULT_TPL']+'/showTipoDeItem.html',
 			       conf = app.config,
@@ -885,9 +859,9 @@ def editItemState(nombre):
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)
-    app.run()
-    
-    
+    #app.run()
+    from werkzeug.serving import run_simple
+    run_simple('127.0.0.1', 8080, app, use_debugger=True, use_reloader=True)
 
 
 
