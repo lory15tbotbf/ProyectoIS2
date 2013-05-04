@@ -46,7 +46,7 @@ class  TestItemCase(unittest.TestCase):
         from ctrl.mgrItem import MgrItem
         nombre = "item2"
         u =Item("item2",1,15,150)
-        MgrItem.borrar(u.nombre)
+        MgrItem().borrar(u.nombre)
         print "Error: Fin de prueba testItemBorrarInexistente: borro item2" 
         assert nombre == u.nombre
     

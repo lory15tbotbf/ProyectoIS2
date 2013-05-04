@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #configurar los paths
-DESDE=/home/silvana/ProyectoIS2/PPproject/src
+DESDE=/home/lory/Escritorio/ProyectoIS2/PPproject/src
 
 cd $DESDE
 epydoc $DESDE/manage.py

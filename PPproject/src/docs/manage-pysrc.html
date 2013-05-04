@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>manage</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Module&nbsp;manage
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="manage-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="manage-module.html">Module manage</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">flask</tt><tt class="py-op">.</tt><tt class="py-name">ext</tt><tt class="py-op">.</tt><tt class="py-name">script</tt> <tt class="py-keyword">import</tt> <tt class="py-name">Manager</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">pruebita</tt> <tt class="py-keyword">import</tt> <tt class="py-name">app</tt><tt class="py-op">,</tt> <tt class="py-name">db</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">models</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable manage.manager=manage-module.html#manager"><a title="manage.manager" class="py-name" href="#" onclick="return doclink('link-0', 'manager', 'link-0');">manager</a></tt> <tt class="py-op">=</tt> <tt class="py-name">Manager</tt><tt class="py-op">(</tt><tt class="py-name">app</tt><tt class="py-op">)</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-string">Clase que contiene los metodos relacionados con la inicializacion de la base de datos </tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-string">@param manager Inicializa el modulo </tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="initdb"></a><div id="initdb-def"><a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">manager</tt><tt class="py-op">.</tt><tt class="py-name">command</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt> <a class="py-toggle" href="#" id="initdb-toggle" onclick="return toggle('initdb');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="manage-module.html#initdb">initdb</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="initdb-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="initdb-expanded"><a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line">    <tt class="py-docstring">""" Inicializar base de datos """</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">    <tt class="py-name">db</tt><tt class="py-op">.</tt><tt class="py-name">create_all</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">    <tt id="link-1" class="py-name" targets="Function manage.createUser()=manage-module.html#createUser"><a title="manage.createUser" class="py-name" href="#" onclick="return doclink('link-1', 'createUser', 'link-1');">createUser</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">    <tt id="link-2" class="py-name" targets="Function manage.createPermiso()=manage-module.html#createPermiso"><a title="manage.createPermiso" class="py-name" href="#" onclick="return doclink('link-2', 'createPermiso', 'link-2');">createPermiso</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">    <tt id="link-3" class="py-name" targets="Function manage.createRol()=manage-module.html#createRol"><a title="manage.createRol" class="py-name" href="#" onclick="return doclink('link-3', 'createRol', 'link-3');">createRol</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">    <tt id="link-4" class="py-name" targets="Function manage.createProject()=manage-module.html#createProject"><a title="manage.createProject" class="py-name" href="#" onclick="return doclink('link-4', 'createProject', 'link-4');">createProject</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">    <tt id="link-5" class="py-name" targets="Function manage.createTipoDeAtrib()=manage-module.html#createTipoDeAtrib"><a title="manage.createTipoDeAtrib" class="py-name" href="#" onclick="return doclink('link-5', 'createTipoDeAtrib', 'link-5');">createTipoDeAtrib</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">    <tt id="link-6" class="py-name" targets="Function manage.createFase()=manage-module.html#createFase"><a title="manage.createFase" class="py-name" href="#" onclick="return doclink('link-6', 'createFase', 'link-6');">createFase</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="createUser"></a><div id="createUser-def"><a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">  </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">manager</tt><tt class="py-op">.</tt><tt class="py-name">command</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt> <a class="py-toggle" href="#" id="createUser-toggle" onclick="return toggle('createUser');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="manage-module.html#createUser">createUser</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="createUser-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="createUser-expanded"><a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">    <tt class="py-docstring">""" Crea usuarios """</tt>  </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt class="py-name">models</tt> <tt class="py-keyword">import</tt> <tt class="py-name">User</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt class="py-name">ctrl</tt><tt class="py-op">.</tt><tt class="py-name">mgrUser</tt> <tt class="py-keyword">import</tt> <tt class="py-name">MgrUser</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">    <tt class="py-name">u</tt> <tt class="py-op">=</tt> <tt class="py-name">User</tt><tt class="py-op">(</tt><tt class="py-string">"admin"</tt><tt class="py-op">,</tt><tt class="py-string">"admin"</tt><tt class="py-op">,</tt><tt class="py-string">"administrador"</tt><tt class="py-op">,</tt><tt class="py-string">"administrador"</tt><tt class="py-op">,</tt><tt class="py-string">"admin@gmail.com"</tt><tt class="py-op">,</tt><tt class="py-number">1234</tt><tt class="py-op">,</tt><tt class="py-string">"usuario administrador"</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">    <tt class="py-name">MgrUser</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">u</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">    <tt class="py-name">u</tt><tt class="py-op">=</tt><tt class="py-name">User</tt><tt class="py-op">(</tt><tt class="py-string">"stfy"</tt><tt class="py-op">,</tt><tt class="py-string">"stfy"</tt><tt class="py-op">,</tt><tt class="py-string">"estefanis"</tt><tt class="py-op">,</tt><tt class="py-string">"zamora"</tt><tt class="py-op">,</tt><tt class="py-string">"stfy@gmail.com"</tt><tt class="py-op">,</tt><tt class="py-number">1111</tt><tt class="py-op">,</tt><tt class="py-string">"usuario nuevo"</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">    <tt class="py-name">MgrUser</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">u</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">    <tt class="py-name">u</tt><tt class="py-op">=</tt><tt class="py-name">User</tt><tt class="py-op">(</tt><tt class="py-string">"vavi"</tt><tt class="py-op">,</tt><tt class="py-string">"vavi"</tt><tt class="py-op">,</tt><tt class="py-string">"victor"</tt><tt class="py-op">,</tt><tt class="py-string">"vera"</tt><tt class="py-op">,</tt><tt class="py-string">"vavi@gmail.com"</tt><tt class="py-op">,</tt><tt class="py-number">2222</tt><tt class="py-op">,</tt><tt class="py-string">"usuario nuevo"</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">    <tt class="py-name">MgrUser</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">u</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">    <tt class="py-name">u</tt><tt class="py-op">=</tt><tt class="py-name">User</tt><tt class="py-op">(</tt><tt class="py-string">"lory"</tt><tt class="py-op">,</tt><tt class="py-string">"lory"</tt><tt class="py-op">,</tt><tt class="py-string">"lorelay"</tt><tt class="py-op">,</tt><tt class="py-string">"ortiz"</tt><tt class="py-op">,</tt><tt class="py-string">"lory@gmail.com"</tt><tt class="py-op">,</tt><tt class="py-number">3333</tt><tt class="py-op">,</tt><tt class="py-string">"usuario nuevo"</tt><tt class="py-op">)</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">    <tt class="py-name">MgrUser</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">u</tt><tt class="py-op">)</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">    <tt class="py-name">u</tt><tt class="py-op">=</tt><tt class="py-name">User</tt><tt class="py-op">(</tt><tt class="py-string">"guille"</tt><tt class="py-op">,</tt><tt class="py-string">"guille"</tt><tt class="py-op">,</tt><tt class="py-string">"guillermo"</tt><tt class="py-op">,</tt><tt class="py-string">"gonzalez"</tt><tt class="py-op">,</tt><tt class="py-string">"guille@gmail.com"</tt><tt class="py-op">,</tt><tt class="py-number">4444</tt><tt class="py-op">,</tt><tt class="py-string">"usuario nuevo"</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">    <tt class="py-name">MgrUser</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">u</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">    <tt class="py-comment">#MgrUser().borrar("guille")</tt> </tt>
+<a name="createRol"></a><div id="createRol-def"><a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">manager</tt><tt class="py-op">.</tt><tt class="py-name">command</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt> <a class="py-toggle" href="#" id="createRol-toggle" onclick="return toggle('createRol');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="manage-module.html#createRol">createRol</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="createRol-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="createRol-expanded"><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">    <tt class="py-docstring">""" </tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">    Crea Roles de Sistema Pre establecidos </tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring">    1. Administrador: -&gt; Permite el acceso al Modulo de Administracion</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">        - administra usuarios</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">        - crea proyecto</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">        - elimina proyecto</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">        - asigna lider a proyecto</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring">        - administra tipo de atributo</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">    2. Desarrollador: -&gt; Permite el acceso al Modulo de Desarrollo</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">        - administra item</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-docstring">        - administra reportes</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-docstring">    3. Lider de Proyecto: -&gt; Permite el acceso al Modulo de Gestion de Cambio</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">        - administra proyecto</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring">        - administra fase</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">        - administra tipo de item</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring">        - administra roles </tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-docstring">        - administra LB</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring">        - calculo de costo</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">        - calculo de impacto</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt class="py-name">models</tt> <tt class="py-keyword">import</tt> <tt class="py-name">Rol</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt class="py-name">ctrl</tt><tt class="py-op">.</tt><tt class="py-name">mgrRol</tt> <tt class="py-keyword">import</tt> <tt class="py-name">MgrRol</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">    <tt class="py-name">r</tt><tt class="py-op">=</tt><tt class="py-name">Rol</tt><tt class="py-op">(</tt><tt class="py-string">"Administrador"</tt><tt class="py-op">,</tt><tt class="py-string">"permite el acceso al modulo de administracion"</tt><tt class="py-op">,</tt><tt class="py-string">"all project"</tt><tt class="py-op">)</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">    <tt class="py-name">MgrRol</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">r</tt><tt class="py-op">)</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">    <tt class="py-name">r</tt><tt class="py-op">=</tt><tt class="py-name">Rol</tt><tt class="py-op">(</tt><tt class="py-string">"Desarrollador"</tt><tt class="py-op">,</tt><tt class="py-string">"permite el acceso al modulo de desarrollo"</tt><tt class="py-op">,</tt><tt class="py-string">"all project"</tt><tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">    <tt class="py-name">MgrRol</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">r</tt><tt class="py-op">)</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">    <tt class="py-name">r</tt><tt class="py-op">=</tt><tt class="py-name">Rol</tt><tt class="py-op">(</tt><tt class="py-string">"LiderDeProyecto"</tt><tt class="py-op">,</tt><tt class="py-string">"permite el acceso al modulo de gestion"</tt><tt class="py-op">,</tt><tt class="py-string">"all project"</tt><tt class="py-op">)</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">    <tt class="py-name">MgrRol</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">r</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">    <tt class="py-comment">#MgrRol().borrar("LiderDeProyecto")</tt> </tt>
+<a name="createPermiso"></a><div id="createPermiso-def"><a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">manager</tt><tt class="py-op">.</tt><tt class="py-name">command</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt> <a class="py-toggle" href="#" id="createPermiso-toggle" onclick="return toggle('createPermiso');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="manage-module.html#createPermiso">createPermiso</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="createPermiso-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="createPermiso-expanded"><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-docstring">    Crea Permisos Predefinidos a nivel de:</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-docstring">    - sistema</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring">    - proyecto</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-docstring">    - fase</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring">    - item</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt class="py-name">models</tt> <tt class="py-keyword">import</tt> <tt class="py-name">Permiso</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt class="py-name">ctrl</tt><tt class="py-op">.</tt><tt class="py-name">mgrPermiso</tt> <tt class="py-keyword">import</tt> <tt class="py-name">MgrPermiso</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">    <tt class="py-comment"># Los permisos a Nivel de Sistema son</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"CrearProyecto"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite crear un proyecto en el sistema"</tt><tt class="py-op">)</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"CrearUsuario"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite crear un usuario dentro de un proyecto"</tt><tt class="py-op">)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"CambiarEstadoUsuario"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite cambiar el estado de un usuario dentro del proyecto"</tt><tt class="py-op">)</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"AdministrarTipoDeAtributo"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite administrar un tipo de atributo"</tt><tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">    <tt class="py-comment"># Los Permisos a Nivel de Proyecto son</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"CrearRol"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite crear un rol en el sistema"</tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"AsignarRolAUsuario"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite asignar Rol a Usuario"</tt><tt class="py-op">)</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"AdministrarFase"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite administrar fase en un proyecto"</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"ConsultaProyecto"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite realizar consultas en un proyecto"</tt><tt class="py-op">)</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">    <tt class="py-comment"># Los Permisos a Nivel de Fase son</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"AdministrarLineaBase"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite administrar linea base en un proyecto"</tt><tt class="py-op">)</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"AdministrarTiposDeItem"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite administrar tipos de item en un proyecto"</tt><tt class="py-op">)</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">    <tt class="py-comment"># Los Permisos a Nivel de Item son</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"AdministrarItem"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite administrar item en un proyecto"</tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"AdministrarCambio"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite administrar cambio en un item de un proyecto"</tt><tt class="py-op">)</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"AprobacionItem"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite administrar la aprobacion de item en un proyecto"</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"DesaprobacionItem"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite administrar la desaprobacion de item en un proyecto"</tt><tt class="py-op">)</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Permiso</tt><tt class="py-op">(</tt><tt class="py-string">"ConsultaItem"</tt><tt class="py-op">,</tt><tt class="py-string">"Permite consulta de item en un proyecto"</tt><tt class="py-op">)</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">    <tt class="py-name">MgrPermiso</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">    <tt class="py-comment">#MgrPermiso().borrar("ConsultaItem")</tt> </tt>
+<a name="createProject"></a><div id="createProject-def"><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">  </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">manager</tt><tt class="py-op">.</tt><tt class="py-name">command</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt> <a class="py-toggle" href="#" id="createProject-toggle" onclick="return toggle('createProject');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="manage-module.html#createProject">createProject</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="createProject-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="createProject-expanded"><a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">    <tt class="py-docstring">""" Crea proyectos por default """</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt class="py-name">models</tt> <tt class="py-keyword">import</tt> <tt class="py-name">Proyecto</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt class="py-name">ctrl</tt><tt class="py-op">.</tt><tt class="py-name">mgrProject</tt> <tt class="py-keyword">import</tt> <tt class="py-name">MgrProject</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Proyecto</tt><tt class="py-op">(</tt><tt class="py-string">"proyecto1"</tt><tt class="py-op">,</tt><tt class="py-string">"sistema para una veterinaria"</tt><tt class="py-op">)</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">    <tt class="py-name">MgrProject</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Proyecto</tt><tt class="py-op">(</tt><tt class="py-string">"proyecto2"</tt><tt class="py-op">,</tt><tt class="py-string">"sistema para una guarderia"</tt><tt class="py-op">)</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">    <tt class="py-name">MgrProject</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Proyecto</tt><tt class="py-op">(</tt><tt class="py-string">"proyecto3"</tt><tt class="py-op">,</tt><tt class="py-string">"sistema para un consultorio"</tt><tt class="py-op">)</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">    <tt class="py-name">MgrProject</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Proyecto</tt><tt class="py-op">(</tt><tt class="py-string">"proyecto4"</tt><tt class="py-op">,</tt><tt class="py-string">"sistema para un supermercado"</tt><tt class="py-op">)</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">    <tt class="py-name">MgrProject</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">    <tt class="py-name">p</tt><tt class="py-op">=</tt><tt class="py-name">Proyecto</tt><tt class="py-op">(</tt><tt class="py-string">"proyecto5"</tt><tt class="py-op">,</tt><tt class="py-string">"sistema para un banco"</tt><tt class="py-op">)</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">    <tt class="py-name">MgrProject</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">    <tt class="py-comment">#MgrProject().borrar("proyecto5")</tt> </tt>
+<a name="createFase"></a><div id="createFase-def"><a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">    <tt class="py-comment">#MgrProject().modificar("proyecto5","proyecto5","sistema para un banco2","Pendiente")</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">manager</tt><tt class="py-op">.</tt><tt class="py-name">command</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt> <a class="py-toggle" href="#" id="createFase-toggle" onclick="return toggle('createFase');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="manage-module.html#createFase">createFase</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="createFase-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="createFase-expanded"><a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">    <tt class="py-docstring">""" crea proyectos por default """</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt class="py-name">models</tt> <tt class="py-keyword">import</tt> <tt class="py-name">Fase</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt class="py-name">ctrl</tt><tt class="py-op">.</tt><tt class="py-name">mgrFase</tt> <tt class="py-keyword">import</tt> <tt class="py-name">MgrFase</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">    <tt class="py-name">f</tt><tt class="py-op">=</tt><tt class="py-name">Fase</tt><tt class="py-op">(</tt><tt class="py-string">"fase1-proyecto1"</tt><tt class="py-op">,</tt><tt class="py-string">"fase inicial"</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">    <tt class="py-name">MgrFase</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">f</tt><tt class="py-op">)</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">    <tt class="py-name">f</tt><tt class="py-op">=</tt><tt class="py-name">Fase</tt><tt class="py-op">(</tt><tt class="py-string">"fase2-proyecto1"</tt><tt class="py-op">,</tt><tt class="py-string">"fase"</tt><tt class="py-op">,</tt><tt class="py-number">2</tt><tt class="py-op">)</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">    <tt class="py-name">MgrFase</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">f</tt><tt class="py-op">)</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">    <tt class="py-name">f</tt><tt class="py-op">=</tt><tt class="py-name">Fase</tt><tt class="py-op">(</tt><tt class="py-string">"fase1-proyecto2"</tt><tt class="py-op">,</tt><tt class="py-string">"fase inicial"</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">    <tt class="py-name">MgrFase</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">f</tt><tt class="py-op">)</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">    <tt class="py-name">f</tt><tt class="py-op">=</tt><tt class="py-name">Fase</tt><tt class="py-op">(</tt><tt class="py-string">"fase2-proyecto2"</tt><tt class="py-op">,</tt><tt class="py-string">"fase"</tt><tt class="py-op">,</tt><tt class="py-number">2</tt><tt class="py-op">)</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">    <tt class="py-name">MgrFase</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">f</tt><tt class="py-op">)</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">    <tt class="py-name">f</tt><tt class="py-op">=</tt><tt class="py-name">Fase</tt><tt class="py-op">(</tt><tt class="py-string">"fase1-proyecto3"</tt><tt class="py-op">,</tt><tt class="py-string">"fase inicial"</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">    <tt class="py-name">MgrFase</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">f</tt><tt class="py-op">)</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">    <tt class="py-name">f</tt><tt class="py-op">=</tt><tt class="py-name">Fase</tt><tt class="py-op">(</tt><tt class="py-string">"fase2-proyecto3"</tt><tt class="py-op">,</tt><tt class="py-string">"fase"</tt><tt class="py-op">,</tt><tt class="py-number">2</tt><tt class="py-op">)</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">    <tt class="py-name">MgrFase</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">f</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">    <tt class="py-comment">#MgrFase().borrar("fase2-proyecto3")</tt> </tt>
+<a name="createTipoDeAtrib"></a><div id="createTipoDeAtrib-def"><a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">    <tt class="py-comment">#MgrFase().modificar("fase1-proyecto3", "fase1-proyecto3","inicio",1)</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">manager</tt><tt class="py-op">.</tt><tt class="py-name">command</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt> <a class="py-toggle" href="#" id="createTipoDeAtrib-toggle" onclick="return toggle('createTipoDeAtrib');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="manage-module.html#createTipoDeAtrib">createTipoDeAtrib</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="createTipoDeAtrib-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="createTipoDeAtrib-expanded"><a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">    <tt class="py-docstring">""" Crea tipo de Atibutos por default """</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt class="py-name">models</tt> <tt class="py-keyword">import</tt> <tt class="py-name">TipoDeAtributo</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt class="py-name">ctrl</tt><tt class="py-op">.</tt><tt class="py-name">mgrTipoDeAtrib</tt> <tt class="py-keyword">import</tt> <tt class="py-name">MgrTipoDeAtrib</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">    <tt class="py-name">t</tt><tt class="py-op">=</tt><tt class="py-name">TipoDeAtributo</tt><tt class="py-op">(</tt><tt class="py-string">"numerico20"</tt><tt class="py-op">,</tt> <tt class="py-string">"numerico"</tt><tt class="py-op">,</tt> <tt class="py-number">20</tt><tt class="py-op">,</tt><tt class="py-string">"atributo numerico con presicion 20"</tt><tt class="py-op">)</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">    <tt class="py-name">MgrTipoDeAtrib</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">t</tt><tt class="py-op">)</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">    <tt class="py-name">t</tt><tt class="py-op">=</tt><tt class="py-name">TipoDeAtributo</tt><tt class="py-op">(</tt><tt class="py-string">"texto45"</tt><tt class="py-op">,</tt> <tt class="py-string">"texto"</tt><tt class="py-op">,</tt> <tt class="py-number">45</tt><tt class="py-op">,</tt><tt class="py-string">"atributo texto con 45 caracteres"</tt><tt class="py-op">)</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">    <tt class="py-name">MgrTipoDeAtrib</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">t</tt><tt class="py-op">)</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">    <tt class="py-name">t</tt><tt class="py-op">=</tt><tt class="py-name">TipoDeAtributo</tt><tt class="py-op">(</tt><tt class="py-string">"date"</tt><tt class="py-op">,</tt> <tt class="py-string">"fecha"</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt><tt class="py-string">"atributo fecha"</tt><tt class="py-op">)</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">    <tt class="py-name">MgrTipoDeAtrib</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">t</tt><tt class="py-op">)</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">    <tt class="py-name">t</tt><tt class="py-op">=</tt><tt class="py-name">TipoDeAtributo</tt><tt class="py-op">(</tt><tt class="py-string">"booleano"</tt><tt class="py-op">,</tt> <tt class="py-string">"boolean"</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt><tt class="py-string">"atributo boleano"</tt><tt class="py-op">)</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">    <tt class="py-name">MgrTipoDeAtrib</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">t</tt><tt class="py-op">)</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">    <tt class="py-name">t</tt><tt class="py-op">=</tt><tt class="py-name">TipoDeAtributo</tt><tt class="py-op">(</tt><tt class="py-string">"numerico45"</tt><tt class="py-op">,</tt> <tt class="py-string">"numerico"</tt><tt class="py-op">,</tt> <tt class="py-number">45</tt><tt class="py-op">,</tt><tt class="py-string">"atributo numerico con presicion 45"</tt><tt class="py-op">)</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">    <tt class="py-name">MgrTipoDeAtrib</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">guardar</tt><tt class="py-op">(</tt><tt class="py-name">t</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">    <tt class="py-comment">#MgrTipoDeAtrib().borrar("date")</tt> </tt>
+<a name="dropdb"></a><div id="dropdb-def"><a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">     </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">manager</tt><tt class="py-op">.</tt><tt class="py-name">command</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt> <a class="py-toggle" href="#" id="dropdb-toggle" onclick="return toggle('dropdb');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="manage-module.html#dropdb">dropdb</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="dropdb-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="dropdb-expanded"><a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">    <tt class="py-docstring">"""Elimino la base de datos."""</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">    <tt class="py-name">db</tt><tt class="py-op">.</tt><tt class="py-name">drop_all</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">    <tt id="link-7" class="py-name"><a title="manage.manager" class="py-name" href="#" onclick="return doclink('link-7', 'manager', 'link-0');">manager</a></tt><tt class="py-op">.</tt><tt class="py-name">run</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat May  4 10:59:57 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

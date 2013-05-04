@@ -44,9 +44,10 @@ class  TestAtribCase(unittest.TestCase):
     def testTipoDeAtribBorrarInexistente(self):
         from models import TipoDeAtributo
         from ctrl.mgrTipoDeAtrib import MgrTipoDeAtrib
-        nombre = "atrib2"
-        u =TipoDeAtributo("atrib2","texto","30","atrib texto precision 30")
-        MgrTipoDeAtrib.borrar(u.nombre)
+        nombre = "feo"
+        u =TipoDeAtributo("feo","texto","30","atrib texto precision 30")
+        MgrTipoDeAtrib().borrar(u.nombre)
+      
         print "Error: Fin de prueba testTipoDeAtribBorrarInexistente: borro atrib2" 
         assert nombre == u.nombre
     
