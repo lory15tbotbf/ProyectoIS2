@@ -185,7 +185,6 @@ class Item(db.Model):
     costo = db.Column(db.Integer, nullable=False)
     estado = db.Column(db.String(20), default ='Activo', nullable=False)
     fechaDeModif = db.Column(db.DateTime, default = datetime.now(), nullable=False) 
-    arcExterno = db.Column(db.String(150))
     
     # one to many: Relaciona Fase x Item 
     faseId = db.Column(db.Integer, db.ForeignKey('Fase.idFase'))
@@ -194,13 +193,13 @@ class Item(db.Model):
     tipoDeItem = db.relationship('TipoDeItem', uselist=False, backref='Item')
     
     
-    def __init__(self, nombre=None, version=None, complejidad=None, costo=None, arcExterno=None):
+    def __init__(self, nombre=None, version=None, complejidad=None, costo=None):
         """ constructor de item """
         self.nombre = nombre
         self.version = version
         self.complejidad = complejidad
         self.costo = costo
-        self.arcExterno = arcExterno
+
 
 
 class TipoDeItem(db.Model):

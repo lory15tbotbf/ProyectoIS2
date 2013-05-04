@@ -27,7 +27,7 @@ def createUser():
     """ Crea usuarios """ 
     from models import User
     from ctrl.mgrUser import MgrUser
-    u = User("admin","admin","administrador","administrador","admin@gmail.com",1234,"usuario administrador")
+    u =User("admin","admin","administrador","administrador","admin@gmail.com",1234,"usuario administrador")
     MgrUser().guardar(u)
     u=User("stfy","stfy","estefanis","zamora","stfy@gmail.com",1111,"usuario nuevo")
     MgrUser().guardar(u)
